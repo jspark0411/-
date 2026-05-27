@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>작업 체크리스트</title>
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --card: #ffffff;
+      --text: #18181b;
+      --muted: #71717a;
+      --line: #e4e4e7;
+      --dark: #18181b;
+      --green-bg: #dcfce7;
+      --green: #15803d;
+      --blue-bg: #dbeafe;
+      --blue: #1d4ed8;
+      --amber-bg: #fef3c7;
+      --amber: #b45309;
+      --red: #dc2626;
+      --red-bg: #fee2e2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .app {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .header {
+      background: var(--dark);
+      color: white;
+      border-radius: 24px;
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .header small { color: #d4d4d8; }
+
+    .header h1 {
+      margin: 8px 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    .header p {
+      margin: 0;
+      color: #d4d4d8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+
+    input, textarea, button {
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      outline: none;
+      background: white;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--dark);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 12px 14px;
+      cursor: pointer;
+      font-weight: 700;
+      background: var(--dark);
+      color: white;
+    }
+
+    button.secondary {
+      background: white;
+      color: var(--dark);
+      border: 1px solid var(--line);
+    }
+
+    button.danger {
+      background: var(--red);
+      color: white;
+    }
+
+    button.ghost {
+      background: transparent;
+      color: var(--dark);
+      border: 1px solid var(--line);
+    }
+
+    button:active { transform: translateY(1px); }
+
+    .main-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .list-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 2px 0 10px;
+    }
+
+    .list-title-row h2 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .list-title-row span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .compact-list {
+      overflow: visible;
+      padding-right: 0;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .calendar-title {
+      font-weight: 900;
+      font-size: 17px;
+    }
+
+    .calendar-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .calendar-nav button {
+      padding: 7px 9px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
+    .calendar-weekdays,
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    .weekday {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 0;
+    }
+
+    .day-cell {
+      position: relative;
+      min-height: 36px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      padding: 4px;
+      cursor: pointer;
+      text-align: left;
+      color: var(--text);
+    }
+
+    .day-cell.outside {
+      opacity: 0.35;
+    }
+
+    .day-cell.selected {
+      outline: 3px solid #18181b;
+      outline-offset: -3px;
+    }
+
+    .day-cell.today {
+      background: #fafafa;
+    }
+
+    .day-num {
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .remain-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: var(--red);
+      color: white;
+      font-size: 9px;
+      font-weight: 900;
+      position: absolute;
+      right: 3px;
+      top: 3px;
+    }
+
+    .day-sub {
+      display: none;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 10px;
+      align-items: center;
+      order: 3;
+    }
+
+    .filter-card-title {
+      grid-column: 1 / -1;
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .calendar-card {
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+
+    .calendar-collapsed-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .quick-summary-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .quick-summary-item {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px;
+    }
+
+    .quick-summary-item div:first-child {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .quick-summary-item div:last-child {
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .summary .card { margin-bottom: 0; }
+
+    .summary-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .summary-value {
+      margin-top: 4px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .task-card:hover {
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+
+    .compact-list .task-card {
+      padding: 14px;
+      border-radius: 20px;
+    }
+
+    .compact-list .task-title {
+      font-size: 16px;
+    }
+
+    .task-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .task-title {
+      margin: 8px 0 4px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .task-meta {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      background: #f4f4f5;
+      color: #52525b;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #f4f4f5;
+      color: #52525b;
+    }
+
+    .badge.green {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .badge.blue {
+      background: var(--blue-bg);
+      color: var(--blue);
+    }
+
+    .badge.amber {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    .progress-wrap {
+      min-width: 130px;
+    }
+
+    .progress-text {
+      text-align: right;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .progress {
+      height: 8px;
+      background: #e4e4e7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress > div {
+      height: 100%;
+      background: var(--dark);
+      border-radius: 999px;
+      transition: width 0.2s;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 34px 14px;
+      color: var(--muted);
+    }
+
+    .detail-header {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .detail-title {
+      font-size: 26px;
+      margin: 8px 0 8px;
+      font-weight: 900;
+    }
+
+    .memo {
+      margin-top: 10px;
+      background: #f4f4f5;
+      border-radius: 16px;
+      padding: 12px;
+      color: #3f3f46;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .section h2 {
+      font-size: 19px;
+      margin: 12px 0;
+    }
+
+    .check-item {
+      width: 100%;
+      text-align: left;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 14px;
+      margin-bottom: 9px;
+      border-radius: 18px;
+      font-weight: 400;
+    }
+
+    .check-item.done {
+      background: #ecfdf5;
+      border-color: #bbf7d0;
+    }
+
+    .check-item.na {
+      background: #f4f4f5;
+      border-color: #d4d4d8;
+    }
+
+    .check-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .check-state {
+      flex: 0 0 auto;
+      min-width: 44px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid #a1a1aa;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #71717a;
+      font-size: 12px;
+      font-weight: 900;
+      background: white;
+    }
+
+    .check-item.done .check-state {
+      background: #22c55e;
+      border-color: #22c55e;
+      color: white;
+    }
+
+    .check-item.na .check-state {
+      background: #71717a;
+      border-color: #71717a;
+      color: white;
+    }
+
+    .check-title {
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .check-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .check-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      padding-left: 56px;
+    }
+
+    .check-actions button {
+      padding: 9px 10px;
+      border-radius: 13px;
+      font-size: 13px;
+      border: 1px solid var(--line);
+      background: white;
+      color: #3f3f46;
+    }
+
+    .check-actions button.selected.done-btn {
+      background: #22c55e;
+      border-color: #22c55e;
+      color: white;
+    }
+
+    .check-actions button.selected.na-btn {
+      background: #71717a;
+      border-color: #71717a;
+      color: white;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.42);
+      padding: 16px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .modal-backdrop.show { display: flex; }
+
+    .modal {
+      width: 100%;
+      max-width: 540px;
+      background: white;
+      border-radius: 26px;
+      padding: 22px;
+      box-shadow: 0 16px 50px rgba(0,0,0,0.18);
+      max-height: 92vh;
+      overflow: auto;
+    }
+
+    .modal h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .label {
+      display: block;
+      font-size: 13px;
+      color: #3f3f46;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .option-grid {
+      display: grid;
+      gap: 8px;
+      background: #fafafa;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+    }
+
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #3f3f46;
+    }
+
+    .option-row input {
+      width: auto;
+      transform: scale(1.05);
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .completion-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 860px) {
+      .main-stack {
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app { padding: 12px; }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .task-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .progress-wrap {
+        width: 100%;
+      }
+
+      .completion-actions,
+      .modal-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .compact-list {
+        max-height: none;
+        overflow: visible;
+      }
+
+      .day-cell {
+        min-height: 58px;
+        border-radius: 12px;
+        padding: 6px;
+      }
+
+      .day-sub {
+        display: none;
+      }
+
+      .remain-dot {
+        min-width: 19px;
+        height: 19px;
+        font-size: 11px;
+        right: 4px;
+        top: 4px;
+      }
+    }
+  </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#18181b">
+  <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+  <div id="app" class="app"></div>
+
+  <div id="taskModal" class="modal-backdrop">
+    <div class="modal">
+      <h2>작업 추가</h2>
+      <div class="form-grid">
+        <label>
+          <span class="label">날짜</span>
+          <input id="formDate" type="date" />
+        </label>
+        <label>
+          <span class="label">장비명</span>
+          <input id="formTool" placeholder="예: CD01, CLEAN TRACK, TOOL-01" />
+        </label>
+        <label>
+          <span class="label">작업명</span>
+          <input id="formWorkName" placeholder="예: Soft Ver. Up, PM, Trouble 조치" />
+        </label>
+
+        <div>
+          <span class="label">작업 옵션</span>
+          <div class="option-grid">
+            <label class="option-row">
+              <input id="formRemaining" type="checkbox" />
+              잔건 작업
+            </label>
+            <label class="option-row">
+              <input id="formSoftVer" type="checkbox" />
+              Soft Ver. Up
+            </label>
+            <label class="option-row">
+              <input id="formParts" type="checkbox" />
+              Parts 필요
+            </label>
+          </div>
+        </div>
+
+        <label>
+          <span class="label">메모</span>
+          <textarea id="formMemo" placeholder="특이사항, 주의사항 등"></textarea>
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button onclick="saveNewTask()">저장</button>
+        <button class="secondary" onclick="closeTaskModal()">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="completionModal" class="modal-backdrop">
+    <div class="modal">
+      <h2>모든 항목이 완료되었습니다.</h2>
+      <p style="margin:0; color:#52525b; line-height:1.6;">이 작업을 어떻게 처리할까요?</p>
+      <div class="completion-actions">
+        <button onclick="markSelectedDone()">완료 처리</button>
+        <button class="danger" onclick="deleteSelectedTask()">삭제</button>
+        <button class="secondary" onclick="closeCompletionModal()">취소</button>
+      </div>
+      <p class="small-note">취소를 누르면 체크 상태는 유지되고 작업은 리스트에 그대로 남습니다.</p>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "work-checklist-app-v6-html";
+
+    const baseBeforeItems = [
+      { id: "before-1", title: "허가서 업로드", desc: "작업 허가서 업로드 완료 확인" },
+      { id: "before-2", title: "기본 서류 준비", desc: "KYM 시트, 이것만은 반드시 지킵니다 시트, 온콜라벨, 작업보고서" },
+      { id: "before-3", title: "작업수순서·도면·관련 자료 출력", desc: "작업에 필요한 자료 출력 완료 확인" },
+      { id: "before-4", title: "Spec 확인", desc: "작업 전 기준 Spec 확인" },
+      { id: "before-5", title: "Tool 위치 확인", desc: "필요한 Tool 위치 확인" },
+      { id: "before-6", title: "반입증 준비", desc: "Tool 반입 필요 시 반입 신청, 승인 확인, 반입증 출력" },
+    ];
+
+    const optionalBeforeItems = {
+      softVer: [
+        { id: "before-7-soft-mail", title: "고객 메일 송부", desc: "Soft Ver. Up 시 고객 메일 송부" },
+      ],
+    };
+
+    const baseAfterItems = [
+      { id: "after-1", title: "고객 청구시간 확인", desc: "작업 후 청구 가능 시간 확인" },
+      { id: "after-2", title: "Tool 위치 변경 시 인폼", desc: "Tool 위치가 변경된 경우 관련자에게 공유" },
+      { id: "after-3", title: "Work Order 작성", desc: "작업 완료 후 Work Order 작성" },
+    ];
+
+    const optionalAfterItems = {
+      parts: [
+        { id: "after-4-parts", title: "파츠 떨구기", desc: "Parts 필요 시 진행" },
+      ],
+      remaining: [
+        { id: "after-5-remaining", title: "잔건 처리", desc: "잔건 작업 시 잔건 시트, CT 홈페이지, TSR 승인, WISDOM 처리" },
+      ],
+      softVer: [
+        { id: "after-6-inform", title: "Inform 메일", desc: "Soft Ver. Up 시 Inform 메일 송부" },
+        { id: "after-7-para", title: "Para Compare", desc: "Soft Ver. Up 시 Para Compare 수행" },
+      ],
+    };
+
+    const allPossibleItems = [
+      ...baseBeforeItems,
+      ...optionalBeforeItems.softVer,
+      ...baseAfterItems,
+      ...optionalAfterItems.parts,
+      ...optionalAfterItems.remaining,
+      ...optionalAfterItems.softVer,
+    ];
+
+    let tasks = [];
+    let selectedDate = null;
+    let calendarYear = new Date().getFullYear();
+    let calendarMonth = new Date().getMonth();
+    let dateFilterActive = false;
+    let calendarCollapsed = false;
+    let selectedTaskId = null;
+    let searchText = "";
+    let hideDone = false;
+
+    function getToday() {
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function dateString(date) {
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, "0");
+      const dd = String(date.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function uid() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+
+    function emptyChecks() {
+      const result = {};
+      allPossibleItems.forEach(item => result[item.id] = "pending");
+      return result;
+    }
+
+    function normalizeTask(task) {
+      const flags = {
+        remaining: Boolean(task.flags?.remaining),
+        softVer: Boolean(task.flags?.softVer),
+        parts: Boolean(task.flags?.parts),
+      };
+
+      const tool = task.tool || "";
+      const workName = task.workName || task.title || "";
+      const title = makeTitle(tool, workName);
+
+      return {
+        ...task,
+        tool,
+        workName,
+        title,
+        flags,
+        checks: normalizeChecks(task.checks || {}),
+        status: task.status || "active",
+      };
+    }
+
+    function normalizeChecks(checks) {
+      const result = emptyChecks();
+      Object.keys(checks || {}).forEach(key => {
+        if (checks[key] === true) result[key] = "done";
+        else if (checks[key] === false) result[key] = "pending";
+        else if (checks[key] === "done" || checks[key] === "na") result[key] = checks[key];
+        else result[key] = "pending";
+      });
+      return result;
+    }
+
+    function isItemResolved(task, item) {
+      const state = task.checks?.[item.id];
+      return state === "done" || state === "na";
+    }
+
+    function load() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        tasks = saved.map(normalizeTask);
+      } catch {
+        tasks = [];
+      }
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+
+    function makeTitle(tool, workName) {
+      const t = String(tool || "").trim();
+      const w = String(workName || "").trim() || "이름 없는 작업";
+      return t ? `[${t}] ${w}` : w;
+    }
+
+    function getBeforeItems(task) {
+      const items = [...baseBeforeItems];
+      if (task.flags?.softVer) items.push(...optionalBeforeItems.softVer);
+      return items;
+    }
+
+    function getAfterItems(task) {
+      const items = [...baseAfterItems];
+      if (task.flags?.parts) items.push(...optionalAfterItems.parts);
+      if (task.flags?.remaining) items.push(...optionalAfterItems.remaining);
+      if (task.flags?.softVer) items.push(...optionalAfterItems.softVer);
+      return items;
+    }
+
+    function getActiveItems(task) {
+      return [...getBeforeItems(task), ...getAfterItems(task)];
+    }
+
+    function progress(task) {
+      const activeItems = getActiveItems(task);
+      const total = activeItems.length;
+      const done = activeItems.filter(item => isItemResolved(task, item)).length;
+      return { done, total, percent: total ? Math.round(done / total * 100) : 0 };
+    }
+
+    function isTaskComplete(task) {
+      const p = progress(task);
+      return p.total > 0 && p.done === p.total;
+    }
+
+    function isTaskRemaining(task) {
+      return task.status !== "done" && !isTaskComplete(task);
+    }
+
+    function getBadge(task) {
+      const p = progress(task);
+      if (task.status === "done") return `<span class="badge green">완료</span>`;
+      if (p.done === p.total) return `<span class="badge green">전체 체크됨</span>`;
+      if (p.done > 0) return `<span class="badge blue">진행중</span>`;
+      return `<span class="badge">미완료</span>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function render() {
+      const app = document.getElementById("app");
+      if (selectedTaskId) {
+        const task = tasks.find(t => t.id === selectedTaskId);
+        if (!task) {
+          selectedTaskId = null;
+          render();
+          return;
+        }
+        renderDetail(app, task);
+      } else {
+        renderList(app);
+      }
+    }
+
+    function renderList(app) {
+      const keyword = searchText.trim().toLowerCase();
+      const visibleTasks = tasks
+        .filter(t => !dateFilterActive || t.date === selectedDate)
+        .filter(t => !hideDone || t.status !== "done")
+        .filter(t => {
+          if (!keyword) return true;
+          return [t.title, t.tool, t.workName, t.memo].some(v => String(v || "").toLowerCase().includes(keyword));
+        })
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      const baseTasks = dateFilterActive ? tasks.filter(t => t.date === selectedDate) : tasks;
+      const completed = baseTasks.filter(t => t.status === "done" || isTaskComplete(t)).length;
+      const remaining = baseTasks.filter(isTaskRemaining).length;
+      const listTitle = dateFilterActive ? `${selectedDate} 작업` : "전체 작업 리스트";
+
+      app.innerHTML = `
+        <header class="header">
+          <div class="header-row">
+            <div>
+              <small>📋 작업 체크리스트</small>
+              <h1>날짜별 작업 리스트</h1>
+              <p>달력에서 날짜별 남은 작업을 확인하고, 아래 리스트에서 작업을 선택해 체크리스트를 관리하세요.</p>
+            </div>
+            <button onclick="openTaskModal()">+ 작업 추가</button>
+          </div>
+        </header>
+
+        <div class="main-stack">
+          ${renderCalendar()}
+
+          <div class="side-panel">
+            <div class="quick-summary-row">
+              <div class="quick-summary-item">
+                <div>표시 범위</div>
+                <div>${dateFilterActive ? selectedDate : "전체"}</div>
+              </div>
+              <div class="quick-summary-item">
+                <div>총 작업</div>
+                <div>${baseTasks.length}건</div>
+              </div>
+              <div class="quick-summary-item">
+                <div>남은 작업</div>
+                <div>${remaining}건</div>
+              </div>
+            </div>
+
+            <div class="list-title-row">
+              <h2>${listTitle}</h2>
+              <span>${visibleTasks.length}건 · 최신순</span>
+            </div>
+
+            <div class="task-list compact-list">
+              ${
+                visibleTasks.length === 0
+                  ? `<div class="card empty"><b>표시할 작업이 없습니다.</b><br/>작업 추가 버튼으로 작업을 등록하세요.</div>`
+                  : visibleTasks.map(taskCard).join("")
+              }
+            </div>
+
+            <div class="card controls">
+              <h3 class="filter-card-title">작업 검색 / 필터</h3>
+              <input placeholder="작업명, 장비명 검색" value="${escapeHtml(searchText)}" oninput="changeSearch(this.value)" />
+              <label style="display:flex; gap:8px; align-items:center; font-size:14px;">
+                <input type="checkbox" ${hideDone ? "checked" : ""} onchange="changeHideDone(this.checked)" style="width:auto;" />
+                완료 숨기기
+              </label>
+              <button class="secondary" onclick="clearDateFilter()">전체 보기</button>
+              <button class="secondary" onclick="deleteAllTasks()">전체 삭제</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCalendar() {
+      const title = `${calendarYear}년 ${calendarMonth + 1}월`;
+      if (calendarCollapsed) {
+        return `
+          <div class="card calendar-card">
+            <div class="calendar-header">
+              <div class="calendar-title">${title}</div>
+              <div class="calendar-nav">
+                <button class="secondary" onclick="toggleCalendar()">달력 펼치기</button>
+              </div>
+            </div>
+            <div class="calendar-collapsed-box">
+              <span>${dateFilterActive ? `선택 날짜: ${selectedDate}` : "현재 전체 작업을 표시 중입니다."}</span>
+              <button class="secondary" onclick="clearDateFilter()">전체 보기</button>
+            </div>
+          </div>
+        `;
+      }
+
+      const first = new Date(calendarYear, calendarMonth, 1);
+      const start = new Date(calendarYear, calendarMonth, 1 - first.getDay());
+      const today = getToday();
+      const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+
+      const cells = [];
+      for (let i = 0; i < 42; i++) {
+        const d = new Date(start);
+        d.setDate(start.getDate() + i);
+        const ds = dateString(d);
+        const monthSame = d.getMonth() === calendarMonth;
+        const selected = dateFilterActive && ds === selectedDate;
+        const todayClass = ds === today;
+        const dateTasks = tasks.filter(t => t.date === ds);
+        const remain = dateTasks.filter(isTaskRemaining).length;
+        const total = dateTasks.length;
+
+        cells.push(`
+          <button class="day-cell ${monthSame ? "" : "outside"} ${selected ? "selected" : ""} ${todayClass ? "today" : ""}" onclick="selectCalendarDate('${ds}')">
+            <div class="day-num">${d.getDate()}</div>
+            ${remain > 0 ? `<div class="remain-dot">${remain}</div>` : ""}
+            ${total > 0 ? `<div class="day-sub">${remain > 0 ? `남은 작업 ${remain}건` : "완료됨"}</div>` : ""}
+          </button>
+        `);
+      }
+
+      return `
+        <div class="card calendar-card">
+          <div class="calendar-header">
+            <div class="calendar-title">${title}</div>
+            <div class="calendar-nav">
+              <button class="secondary" onclick="moveMonth(-1)">‹</button>
+              <button class="secondary" onclick="goToday()">오늘</button>
+              <button class="secondary" onclick="moveMonth(1)">›</button>
+              <button class="secondary" onclick="toggleCalendar()">접기</button>
+            </div>
+          </div>
+          <div class="calendar-weekdays">
+            ${weekdays.map(day => `<div class="weekday">${day}</div>`).join("")}
+          </div>
+          <div class="calendar-grid">
+            ${cells.join("")}
+          </div>
+          <p class="small-note">빨간 숫자는 해당 날짜에 완료되지 않은 작업 개수입니다. 날짜를 누르면 해당 날짜 작업만 표시됩니다.</p>
+        </div>
+      `;
+    }
+
+    function taskCard(task) {
+      const p = progress(task);
+      return `
+        <div class="task-card" onclick="openTask('${task.id}')">
+          <div class="task-top">
+            <div>
+              <div>${getBadge(task)} <span style="font-size:12px; color:#71717a; font-weight:700;">${p.done}/${p.total}</span></div>
+              <div class="task-title">${escapeHtml(task.title)}</div>
+              <div class="task-meta">${escapeHtml(task.date)} · 장비명: ${escapeHtml(task.tool || "미입력")} · 작업명: ${escapeHtml(task.workName || "미입력")}</div>
+              ${renderTags(task)}
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-text">${p.percent}%</div>
+              <div class="progress"><div style="width:${p.percent}%"></div></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTags(task) {
+      const tags = [];
+      if (task.flags?.remaining) tags.push("잔건");
+      if (task.flags?.softVer) tags.push("Soft Ver. Up");
+      if (task.flags?.parts) tags.push("Parts");
+      if (!tags.length) return "";
+      return `<div class="tag-row">${tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div>`;
+    }
+
+    function renderDetail(app, task) {
+      const p = progress(task);
+      app.innerHTML = `
+        <button class="secondary" onclick="goList()" style="margin-bottom:12px;">← 작업 리스트로</button>
+
+        <div class="card">
+          <div class="detail-header">
+            <div>
+              <div>${getBadge(task)} <span style="color:#71717a; font-size:13px;">${escapeHtml(task.date)}</span></div>
+              <div class="detail-title">${escapeHtml(task.title)}</div>
+              <div class="task-meta">장비명: ${escapeHtml(task.tool || "미입력")} · 작업명: ${escapeHtml(task.workName || "미입력")}</div>
+              ${renderTags(task)}
+              ${task.memo ? `<div class="memo">${escapeHtml(task.memo)}</div>` : ""}
+            </div>
+            <button class="danger" onclick="deleteTask('${task.id}')">삭제</button>
+          </div>
+
+          <div style="margin-top:18px;">
+            <div style="display:flex; justify-content:space-between; color:#52525b; font-size:14px; font-weight:800; margin-bottom:6px;">
+              <span>진행률</span><span>${p.done}/${p.total} · ${p.percent}%</span>
+            </div>
+            <div class="progress" style="height:12px;"><div style="width:${p.percent}%"></div></div>
+          </div>
+        </div>
+
+        <div class="section-grid">
+          <div class="section">
+            <h2>작업 전</h2>
+            ${getBeforeItems(task).map((item, idx) => checkItem(task, item, idx + 1)).join("")}
+          </div>
+          <div class="section">
+            <h2>작업 후</h2>
+            ${getAfterItems(task).map((item, idx) => checkItem(task, item, idx + 1)).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function checkItem(task, item, num) {
+      const state = task.checks[item.id] || "pending";
+      const stateClass = state === "done" ? "done" : state === "na" ? "na" : "";
+      const stateText = state === "done" ? "완료" : state === "na" ? "N/A" : "미완료";
+      return `
+        <div class="check-item ${stateClass}">
+          <div class="check-row">
+            <span class="check-state">${stateText}</span>
+            <span>
+              <span class="check-title">${num}. ${escapeHtml(item.title)}</span>
+              <span class="check-desc">${escapeHtml(item.desc)}</span>
+            </span>
+          </div>
+          <div class="check-actions">
+            <button class="done-btn ${state === "done" ? "selected" : ""}" onclick="setCheckState('${item.id}', 'done')">완료</button>
+            <button class="na-btn ${state === "na" ? "selected" : ""}" onclick="setCheckState('${item.id}', 'na')">해당 없음</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function openTaskModal() {
+      document.getElementById("formDate").value = dateFilterActive ? selectedDate : getToday();
+      document.getElementById("formTool").value = "";
+      document.getElementById("formWorkName").value = "";
+      document.getElementById("formRemaining").checked = false;
+      document.getElementById("formSoftVer").checked = false;
+      document.getElementById("formParts").checked = false;
+      document.getElementById("formMemo").value = "";
+      document.getElementById("taskModal").classList.add("show");
+    }
+
+    function closeTaskModal() {
+      document.getElementById("taskModal").classList.remove("show");
+    }
+
+    function saveNewTask() {
+      const date = document.getElementById("formDate").value || selectedDate;
+      const tool = document.getElementById("formTool").value.trim();
+      const workName = document.getElementById("formWorkName").value.trim() || "이름 없는 작업";
+      const memo = document.getElementById("formMemo").value.trim();
+      const flags = {
+        remaining: document.getElementById("formRemaining").checked,
+        softVer: document.getElementById("formSoftVer").checked,
+        parts: document.getElementById("formParts").checked,
+      };
+
+      tasks.unshift({
+        id: uid(),
+        date,
+        tool,
+        workName,
+        title: makeTitle(tool, workName),
+        memo,
+        flags,
+        status: "active",
+        checks: emptyChecks(),
+        createdAt: new Date().toISOString()
+      });
+
+      selectedDate = date;
+      dateFilterActive = true;
+      const d = new Date(date + "T00:00:00");
+      calendarYear = d.getFullYear();
+      calendarMonth = d.getMonth();
+
+      save();
+      closeTaskModal();
+      render();
+    }
+
+    function openTask(id) {
+      selectedTaskId = id;
+      render();
+    }
+
+    function goList() {
+      selectedTaskId = null;
+      render();
+    }
+
+    function setCheckState(itemId, state) {
+      const task = tasks.find(t => t.id === selectedTaskId);
+      if (!task) return;
+
+      const current = task.checks[itemId] || "pending";
+      task.checks[itemId] = current === state ? "pending" : state;
+      task.status = "active";
+
+      const allDone = isTaskComplete(task);
+      save();
+      render();
+
+      if (allDone) {
+        document.getElementById("completionModal").classList.add("show");
+      }
+    }
+
+    function closeCompletionModal() {
+      document.getElementById("completionModal").classList.remove("show");
+    }
+
+    function markSelectedDone() {
+      const task = tasks.find(t => t.id === selectedTaskId);
+      if (task) {
+        task.status = "done";
+        save();
+      }
+      closeCompletionModal();
+      render();
+    }
+
+    function deleteSelectedTask() {
+      if (!selectedTaskId) return;
+      tasks = tasks.filter(t => t.id !== selectedTaskId);
+      selectedTaskId = null;
+      save();
+      closeCompletionModal();
+      render();
+    }
+
+    function deleteTask(id) {
+      if (!confirm("이 작업을 삭제할까요?")) return;
+      tasks = tasks.filter(t => t.id !== id);
+      if (selectedTaskId === id) selectedTaskId = null;
+      save();
+      render();
+    }
+
+    function deleteAllTasks() {
+      if (!confirm("저장된 모든 작업을 삭제할까요?")) return;
+      tasks = [];
+      selectedTaskId = null;
+      save();
+      render();
+    }
+
+    function changeSearch(value) {
+      searchText = value;
+      render();
+    }
+
+    function changeHideDone(value) {
+      hideDone = value;
+      render();
+    }
+
+    function selectCalendarDate(value) {
+      if (dateFilterActive && selectedDate === value) {
+        dateFilterActive = false;
+        selectedDate = null;
+      } else {
+        selectedDate = value;
+        dateFilterActive = true;
+        const d = new Date(value + "T00:00:00");
+        calendarYear = d.getFullYear();
+        calendarMonth = d.getMonth();
+      }
+      render();
+    }
+
+    function clearDateFilter() {
+      dateFilterActive = false;
+      selectedDate = null;
+      render();
+    }
+
+    function moveMonth(delta) {
+      const d = new Date(calendarYear, calendarMonth + delta, 1);
+      calendarYear = d.getFullYear();
+      calendarMonth = d.getMonth();
+      render();
+    }
+
+    function goToday() {
+      selectedDate = getToday();
+      dateFilterActive = true;
+      const d = new Date();
+      calendarYear = d.getFullYear();
+      calendarMonth = d.getMonth();
+      render();
+    }
+
+    function toggleCalendar() {
+      calendarCollapsed = !calendarCollapsed;
+      render();
+    }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+      });
+    }
+
+    load();
+    render();
+  </script>
+</body>
+</html>

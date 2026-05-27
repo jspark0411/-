@@ -1,0 +1,18 @@
+{
+  "name": "작업 체크리스트",
+  "short_name": "체크리스트",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f4f5",
+  "theme_color": "#18181b",
+  "description": "모바일 달력 기반 날짜별 작업 전/후 체크리스트 관리 웹앱",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
