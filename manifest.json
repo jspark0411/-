@@ -1,12 +1,12 @@
 {
-  "name": "작업 체크리스트",
-  "short_name": "체크리스트",
+  "name": "업무노트",
+  "short_name": "업무노트",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f4f4f5",
   "theme_color": "#18181b",
-  "description": "모바일 달력 기반 날짜별 작업 전/후 체크리스트 관리 웹앱",
+  "description": "작업 체크리스트와 수순서를 관리하는 업무노트",
   "icons": [
     {
       "src": "icon.svg",
