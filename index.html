@@ -109,9 +109,11 @@ const ALL=[...B,...BO.pass,...BO.soft,...A,...AO.remain,...AO.soft,...AO.partsDr
 
 let tasks=[],procs=[],mats=[],view="tasks",tab="before",selected=null,selectedProc=null,editTask=null,editProc=null,editMat=null;
 let selDate=null,dateOn=false,calY=new Date().getFullYear(),calM=new Date().getMonth(),calFold=false,search="",showDone=false;
-let procOpen=true,matOpen=false,procFilters=[],directDraft=[],procMatSearch="",taskMatSearch="",matMasterSearch="";
+let procOpen=true,matOpen=false,procFilters=[],directDraft=[],procMatText="",procMatSearch="",taskMatText="",taskMatSearch="",matMasterText="",matMasterSearch="";
 
 const $=id=>document.getElementById(id);
+
+function activeSearch(q){return (q||"").trim().toLowerCase()}
 function today(){let d=new Date();return ds(d)}
 function ds(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
@@ -230,10 +232,10 @@ function procPage(app){
 }
 function procList(){let list=procs.filter(p=>!procFilters.length||procFilters.some(f=>(p.types||[]).includes(f))).sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt));return list.length?list.map(p=>`<div class="procCard" onclick="openProcDetail('${p.id}')"><div class="taskTitle">[${esc(typeLabel(p.types))}] ${esc(p.title)}</div><div class="meta">연결 준비물 ${((p.materials?.ours||[]).length+(p.materials?.customer||[]).length)}개 · ${esc((p.content||"").slice(0,70))}${(p.content||"").length>70?"...":""}</div></div>`).join(""):'<div class="card empty">표시할 수순서가 없습니다.</div>'}
 function matList(){
- let q=(matMasterSearch||"").trim().toLowerCase();
+ let q=activeSearch(matMasterSearch);
  let list=[...mats].sort((a,b)=>a.name.localeCompare(b.name,"ko"));
  let shown=list.filter(m=>!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q));
- let search=`<input placeholder="준비물 검색" value="${esc(matMasterSearch)}" oninput="matMasterSearch=this.value;render()" style="margin:0 0 10px">`;
+ let search=`<div class="row" style="gap:6px;margin:0 0 8px"><input placeholder="준비물 검색" value="${esc(matMasterText)}" oninput="matMasterText=this.value" onkeydown="if(event.key==='Enter'){matMasterSearch=matMasterText;render()}" style="margin:0;flex:1"><button onclick="matMasterSearch=matMasterText;render()" style="width:auto;padding:0 14px">검색</button><button class="secondary" onclick="matMasterText='';matMasterSearch='';render()" style="width:auto;padding:0 12px">초기화</button></div>`;
  if(!list.length)return search+'<div class="card empty">등록된 준비물이 없습니다.</div>';
  if(!shown.length)return search+'<div class="card empty">검색 결과가 없습니다.</div>';
  return search+shown.map(m=>`<div class="matCard" onclick="openMatModal('${m.id}')"><div class="row"><div><div class="title">${esc(m.name)}</div>${m.memo?`<div class="meta">${esc(m.memo)}</div>`:""}</div><span>›</span></div></div>`).join("")
@@ -265,10 +267,10 @@ function renderTaskMatChoices(selectedGroups=null){
  let picked=selectedGroups||(current?.materials)||{ours:[],customer:[]};
  let auto=procMats([...document.querySelectorAll(".procChoice:checked")].map(x=>x.value));
  let autoO=new Set(auto.ours), autoC=new Set(auto.customer);
- let q=(taskMatSearch||"").trim().toLowerCase();
+ let q=activeSearch(taskMatSearch);
  let list=mats.slice().sort((a,b)=>a.name.localeCompare(b.name,"ko"));
  let visibleCount=list.filter(m=>!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q)).length;
- let search=`<input placeholder="준비물 검색" value="${esc(taskMatSearch)}" oninput="taskMatSearch=this.value;renderTaskMatChoices(currentTaskMatGroups());refreshTaskMaterialSummary()" style="margin-bottom:8px">`;
+ let search=`<div class="row" style="gap:6px;margin-bottom:8px"><input placeholder="준비물 검색" value="${esc(taskMatText)}" oninput="taskMatText=this.value" onkeydown="if(event.key==='Enter'){taskMatSearch=taskMatText;renderTaskMatChoices(currentTaskMatGroups());refreshTaskMaterialSummary()}" style="margin:0;flex:1"><button onclick="taskMatSearch=taskMatText;renderTaskMatChoices(currentTaskMatGroups());refreshTaskMaterialSummary()" style="width:auto;padding:0 14px">검색</button><button class="secondary" onclick="taskMatText='';taskMatSearch='';renderTaskMatChoices(currentTaskMatGroups());refreshTaskMaterialSummary()" style="width:auto;padding:0 12px">초기화</button></div>`;
  if(!list.length){box.innerHTML=search+'<div class="meta">등록된 준비물이 없습니다.</div>';return}
  box.innerHTML=search+(visibleCount?"" : '<div class="card empty">검색 결과가 없습니다.</div>')+list.map(m=>{
   let matched=!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q);
@@ -311,10 +313,10 @@ function syncAllProcTypes(){$("pAllTypes").checked=[...document.querySelectorAll
 function currentProcMatGroups(){return {ours:[...document.querySelectorAll(".pMat.ours:checked")].map(x=>x.value),customer:[...document.querySelectorAll(".pMat.customer:checked")].map(x=>x.value)}}
 function renderProcMatChoices(selectedGroups=null){
  let box=$("pMatChoices");if(!box)return;let sel=selectedGroups||{ours:[],customer:[]};
- let q=(procMatSearch||"").trim().toLowerCase();
+ let q=activeSearch(procMatSearch);
  let list=mats.slice().sort((a,b)=>a.name.localeCompare(b.name,"ko"));
  let visibleCount=list.filter(m=>!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q)).length;
- let search=`<input placeholder="준비물 검색" value="${esc(procMatSearch)}" oninput="procMatSearch=this.value;renderProcMatChoices(currentProcMatGroups())" style="margin-bottom:8px">`;
+ let search=`<div class="row" style="gap:6px;margin-bottom:8px"><input placeholder="준비물 검색" value="${esc(procMatText)}" oninput="procMatText=this.value" onkeydown="if(event.key==='Enter'){procMatSearch=procMatText;renderProcMatChoices(currentProcMatGroups())}" style="margin:0;flex:1"><button onclick="procMatSearch=procMatText;renderProcMatChoices(currentProcMatGroups())" style="width:auto;padding:0 14px">검색</button><button class="secondary" onclick="procMatText='';procMatSearch='';renderProcMatChoices(currentProcMatGroups())" style="width:auto;padding:0 12px">초기화</button></div>`;
  if(!list.length){box.innerHTML=search+'<div class="meta">등록된 준비물이 없습니다.</div>';return}
  box.innerHTML=search+(visibleCount?"" : '<div class="card empty">검색 결과가 없습니다.</div>')+list.map(m=>{
   let matched=!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q);
