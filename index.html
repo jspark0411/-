@@ -231,13 +231,103 @@ function procPage(app){
 function procList(){let list=procs.filter(p=>!procFilters.length||procFilters.some(f=>(p.types||[]).includes(f))).sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt));return list.length?list.map(p=>`<div class="procCard" onclick="openProcDetail('${p.id}')"><div class="taskTitle">[${esc(typeLabel(p.types))}] ${esc(p.title)}</div><div class="meta">연결 준비물 ${((p.materials?.ours||[]).length+(p.materials?.customer||[]).length)}개 · ${esc((p.content||"").slice(0,70))}${(p.content||"").length>70?"...":""}</div></div>`).join(""):'<div class="card empty">표시할 수순서가 없습니다.</div>'}
 function matList(){
  let q=(matMasterSearch||"").trim().toLowerCase();
- let all=mats.slice().sort((a,b)=>a.name.localeCompare(b.name,"ko"));
- let list=all.filter(m=>!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q));
- let searchHtml=`<input id="matMasterSearchInput" placeholder="준비물 검색" value="${esc(matMasterSearch)}" oninput="matMasterSearch=this.value;render()" style="margin:0 0 8px">`;
- if(!all.length)return searchHtml+'<div class="card empty">등록된 준비물이 없습니다.</div>';
- if(!list.length)return searchHtml+'<div class="card empty">검색 결과가 없습니다.</div>';
- return searchHtml+list.map(m=>`<div class="procCard" onclick="openMatModal('${m.id}')"><div class="taskTitle">${esc(m.name)}</div><div class="meta">${esc(m.memo||"")}</div></div>`).join("")
+ let list=[...mats].sort((a,b)=>a.name.localeCompare(b.name,"ko"));
+ let shown=list.filter(m=>!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q));
+ let search=`<input placeholder="준비물 검색" value="${esc(matMasterSearch)}" oninput="matMasterSearch=this.value;render()" style="margin:0 0 10px">`;
+ if(!list.length)return search+'<div class="card empty">등록된 준비물이 없습니다.</div>';
+ if(!shown.length)return search+'<div class="card empty">검색 결과가 없습니다.</div>';
+ return search+shown.map(m=>`<div class="matCard" onclick="openMatModal('${m.id}')"><div class="row"><div><div class="title">${esc(m.name)}</div>${m.memo?`<div class="meta">${esc(m.memo)}</div>`:""}</div><span>›</span></div></div>`).join("")
 }
+function openProcDetail(id){selectedProc=id;history.pushState({screen:"proc"},"","#proc");render()}
+function procDetail(app,p){app.innerHTML=header("수순서 상세")+`<div class="card"><div class="row"><button class="secondary" onclick="selectedProc=null;history.replaceState({screen:'main'},'','#');render()">← 목록</button><div><button class="secondary" onclick="openProcModal('${p.id}')">수정</button> <button class="danger" onclick="deleteProc('${p.id}')">삭제</button></div></div><h2>[${esc(typeLabel(p.types))}] ${esc(p.title)}</h2><pre style="white-space:pre-wrap;font-family:inherit">${esc(p.content)}</pre></div><div class="card"><h3>연결 준비물</h3>${procMaterialPreview(p)}</div>`}
+function procMaterialPreview(p){let ids={ours:p.materials?.ours||[],customer:p.materials?.customer||[]};let total=ids.ours.length+ids.customer.length;if(!total)return '<div class="meta">연결된 준비물이 없습니다.</div>';return ["ours","customer"].map(k=>{let a=ids[k].map(id=>mats.find(m=>m.id===id)).filter(Boolean);return a.length?`<b>${matKindName(k)}</b>${a.map(m=>`<div class="checkRow">${esc(m.name)}</div>`).join("")}`:""}).join("")}
+function deleteProc(id){if(confirm("수순서를 삭제할까요? 연결된 작업의 수순서 탭에서도 더 이상 보이지 않습니다.")){procs=procs.filter(p=>p.id!==id);tasks=tasks.map(t=>({...t,procIds:(t.procIds||[]).filter(pid=>pid!==id)}));selectedProc=null;save();render()}}
+
+function openTaskModal(id=null){
+ editTask=id;let t=id?tasks.find(x=>x.id===id):null;directDraft=t?JSON.parse(JSON.stringify(t.directMaterials||[])):[];
+ $("taskModalTitle").textContent=t?"작업 수정":"작업 추가";
+ $("fDate").value=t?.date||(dateOn?selDate:today());
+ $("fType").innerHTML=TYPES.map(tp=>`<option ${t?.type===tp?"selected":""}>${tp}</option>`).join("");
+ $("fTool").value=t?.tool||"";$("fWork").value=t?.work||"";$("fMemo").value=t?.memo||"";
+ $("fRemain").checked=!!t?.flags?.remain;$("fSoft").checked=!!t?.flags?.soft;$("fPass").checked=!!t?.flags?.pass;$("fPartsDrop").checked=!!t?.flags?.partsDrop;
+ $("fAllProc").checked=false;renderProcChoices(t?.procIds||[]);renderTaskMatChoices(t?.materials||null);renderDirectMatList();refreshTaskMaterialSummary();
+ $("taskModal").classList.add("show");pushModalState("taskModal");
+}
+function closeTaskModal(){editTask=null;directDraft=[];$("taskModal").classList.remove("show")}
+function renderProcChoices(selectedIds=[]){
+ let box=$("procChoices");if(!box)return;let type=$("fType").value||"ACT",all=$("fAllProc").checked;let current=editTask?tasks.find(x=>x.id===editTask):null;let picked=selectedIds.length?selectedIds:(current?.procIds||[]);
+ let list=procs.filter(p=>all||(p.types||[]).includes(type)||picked.includes(p.id));
+ box.innerHTML=list.length?list.map(p=>`<label class="choiceRow"><input class="procChoice" type="checkbox" value="${p.id}" ${picked.includes(p.id)?"checked":""} onchange="renderTaskMatChoices();refreshTaskMaterialSummary()"><span><b>[${esc(typeLabel(p.types))}] ${esc(p.title)}</b><br><span class="meta">연결 준비물 ${((p.materials?.ours||[]).length+(p.materials?.customer||[]).length)}개</span></span></label>`).join(""):'<div class="empty">선택 가능한 수순서가 없습니다.</div>';
+ refreshProcSummary();
+}
+function renderTaskMatChoices(selectedGroups=null){
+ let box=$("taskMatChoices");if(!box)return;let current=editTask?tasks.find(x=>x.id===editTask):null;
+ let picked=selectedGroups||(current?.materials)||{ours:[],customer:[]};
+ let auto=procMats([...document.querySelectorAll(".procChoice:checked")].map(x=>x.value));
+ let autoO=new Set(auto.ours), autoC=new Set(auto.customer);
+ let q=(taskMatSearch||"").trim().toLowerCase();
+ let list=mats.slice().sort((a,b)=>a.name.localeCompare(b.name,"ko"));
+ let visibleCount=list.filter(m=>!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q)).length;
+ let search=`<input placeholder="준비물 검색" value="${esc(taskMatSearch)}" oninput="taskMatSearch=this.value;renderTaskMatChoices(currentTaskMatGroups());refreshTaskMaterialSummary()" style="margin-bottom:8px">`;
+ if(!list.length){box.innerHTML=search+'<div class="meta">등록된 준비물이 없습니다.</div>';return}
+ box.innerHTML=search+(visibleCount?"" : '<div class="card empty">검색 결과가 없습니다.</div>')+list.map(m=>{
+  let matched=!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q);
+  return `<div class="choiceRow" style="justify-content:space-between;align-items:flex-start;${matched?'':'display:none'}">
+   <div style="min-width:0"><b>${esc(m.name)}</b>${m.memo?`<br><span class="meta">${esc(m.memo)}</span>`:""}</div>
+   <div class="row" style="gap:6px;flex-shrink:0">
+    <label class="pill ${autoO.has(m.id)?'ok':''}" style="cursor:pointer"><input class="matChoice ours" type="checkbox" value="${m.id}" ${((picked.ours||[]).includes(m.id)||autoO.has(m.id))?"checked":""} ${autoO.has(m.id)?"data-auto='1'":""} onchange="refreshTaskMaterialSummary()" style="width:auto;margin-right:4px">우리</label>
+    <label class="pill ${autoC.has(m.id)?'ok':''}" style="cursor:pointer"><input class="matChoice customer" type="checkbox" value="${m.id}" ${((picked.customer||[]).includes(m.id)||autoC.has(m.id))?"checked":""} ${autoC.has(m.id)?"data-auto='1'":""} onchange="refreshTaskMaterialSummary()" style="width:auto;margin-right:4px">고객</label>
+   </div>
+  </div>`
+ }).join("")
+}
+function refreshProcSummary(){let c=[...document.querySelectorAll(".procChoice:checked")].length;let el=$("procSummary");if(el)el.textContent=`수순서 ${c}개 선택됨`}
+function currentTaskMatGroups(){return {ours:[...document.querySelectorAll(".matChoice.ours:checked")].map(x=>x.value),customer:[...document.querySelectorAll(".matChoice.customer:checked")].map(x=>x.value)}}
+function refreshTaskMaterialSummary(){refreshProcSummary();let el=$("matSummary");if(el)el.textContent=materialSummaryFromGroups(currentTaskMatGroups(),directDraft)}
+function addDirectMaterial(){let name=$("directMatName").value.trim();if(!name)return;directDraft.push({id:uid(),name,kind:$("directMatKind").value,memo:"",direct:true});$("directMatName").value="";renderDirectMatList();refreshTaskMaterialSummary()}
+function renderDirectMatList(){let box=$("directMatList");if(!box)return;box.innerHTML=directDraft.length?directDraft.map(m=>`<div class="checkRow"><span><b>${esc(m.name)}</b><br><span class="meta">${matKindName(m.kind)}</span></span><button class="danger mini" onclick="directDraft=directDraft.filter(x=>x.id!=='${m.id}');renderDirectMatList();refreshTaskMaterialSummary()">삭제</button></div>`).join(""):""}
+function saveTask(){
+ let date=$("fDate").value||today(),type=$("fType").value,tool=$("fTool").value.trim(),work=$("fWork").value.trim()||"이름 없는 작업";
+ let procIds=[...document.querySelectorAll(".procChoice:checked")].map(x=>x.value);
+ let auto=procMats(procIds), autoO=new Set(auto.ours), autoC=new Set(auto.customer);
+ let selected=currentTaskMatGroups();
+ let materials={ours:selected.ours.filter(id=>!autoO.has(id)),customer:selected.customer.filter(id=>!autoC.has(id))};
+ let payload={date,type,tool,work,title:title(tool,work),memo:$("fMemo").value.trim(),flags:{remain:$("fRemain").checked,soft:$("fSoft").checked,pass:$("fPass").checked,partsDrop:$("fPartsDrop").checked},procIds,materials,directMaterials:directDraft};
+ if(editTask){tasks=tasks.map(t=>t.id===editTask?{...t,...payload,checks:{...empty(),...(t.checks||{})},materialChecks:t.materialChecks||{}}:t)}
+ else tasks.unshift({id:uid(),...payload,checks:empty(),materialChecks:{},status:"active",createdAt:new Date().toISOString()});
+ selDate=date;dateOn=true;let d=new Date(date+"T00:00:00");calY=d.getFullYear();calM=d.getMonth();save();closeTaskModal();render();
+}
+
+function openProcModal(id=null){
+ editProc=id;let p=id?procs.find(x=>x.id===id):null;
+ $("procModalTitle").textContent=p?"수순서 수정":"수순서 등록";$("pTitle").value=p?.title||"";$("pContent").value=p?.content||"";
+ $("pTypes").innerHTML=TYPES.map(t=>`<label class="optionRow"><input class="pType" type="checkbox" value="${t}" ${p?.types?.includes(t)?"checked":""} onchange="syncAllProcTypes()"> ${t}</label>`).join("");
+ $("pAllTypes").checked=(p?.types||[]).length===TYPES.length;renderProcMatChoices(p?.materials||null);
+ $("procModal").classList.add("show");pushModalState("procModal");
+}
+function closeProcModal(){editProc=null;$("procModal").classList.remove("show")}
+function toggleAllProcTypes(on){document.querySelectorAll(".pType").forEach(x=>x.checked=on)}
+function syncAllProcTypes(){$("pAllTypes").checked=[...document.querySelectorAll(".pType")].every(x=>x.checked)}
+function currentProcMatGroups(){return {ours:[...document.querySelectorAll(".pMat.ours:checked")].map(x=>x.value),customer:[...document.querySelectorAll(".pMat.customer:checked")].map(x=>x.value)}}
+function renderProcMatChoices(selectedGroups=null){
+ let box=$("pMatChoices");if(!box)return;let sel=selectedGroups||{ours:[],customer:[]};
+ let q=(procMatSearch||"").trim().toLowerCase();
+ let list=mats.slice().sort((a,b)=>a.name.localeCompare(b.name,"ko"));
+ let visibleCount=list.filter(m=>!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q)).length;
+ let search=`<input placeholder="준비물 검색" value="${esc(procMatSearch)}" oninput="procMatSearch=this.value;renderProcMatChoices(currentProcMatGroups())" style="margin-bottom:8px">`;
+ if(!list.length){box.innerHTML=search+'<div class="meta">등록된 준비물이 없습니다.</div>';return}
+ box.innerHTML=search+(visibleCount?"" : '<div class="card empty">검색 결과가 없습니다.</div>')+list.map(m=>{
+  let matched=!q||(m.name||"").toLowerCase().includes(q)||(m.memo||"").toLowerCase().includes(q);
+  return `<div class="choiceRow" style="justify-content:space-between;align-items:flex-start;${matched?'':'display:none'}">
+   <div style="min-width:0"><b>${esc(m.name)}</b>${m.memo?`<br><span class="meta">${esc(m.memo)}</span>`:""}</div>
+   <div class="row" style="gap:6px;flex-shrink:0">
+    <label class="pill" style="cursor:pointer"><input class="pMat ours" type="checkbox" value="${m.id}" ${(sel.ours||[]).includes(m.id)?"checked":""} style="width:auto;margin-right:4px">우리</label>
+    <label class="pill" style="cursor:pointer"><input class="pMat customer" type="checkbox" value="${m.id}" ${(sel.customer||[]).includes(m.id)?"checked":""} style="width:auto;margin-right:4px">고객</label>
+   </div>
+  </div>`
+ }).join("")
+}
+function saveProc(){let title=$("pTitle").value.trim()||"이름 없는 수순서",types=[...document.querySelectorAll(".pType:checked")].map(x=>x.value),content=$("pContent").value.trim(),materials={ours:[...document.querySelectorAll(".pMat.ours:checked")].map(x=>x.value),customer:[...document.querySelectorAll(".pMat.customer:checked")].map(x=>x.value)};if(!types.length){alert("장비 종류를 하나 이상 선택해주세요.");return}if(editProc){procs=procs.map(p=>p.id===editProc?{...p,title,types,content,materials,updatedAt:new Date().toISOString()}:p)}else procs.unshift({id:uid(),title,types,content,materials,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});save();closeProcModal();render()}
 function openMatModal(id=null){editMat=id;let m=id?mats.find(x=>x.id===id):null;$("matModalTitle").textContent=m?"준비물 수정":"준비물 등록";$("mName").value=m?.name||"";$("mMemo").value=m?.memo||"";$("matDeleteArea").innerHTML=m?`<button class="danger" style="width:100%" onclick="deleteMat('${m.id}')">준비물 삭제</button>`:"";$("matModal").classList.add("show");pushModalState("matModal")}
 function closeMatModal(){editMat=null;$("matModal").classList.remove("show")}
 function saveMat(){let name=$("mName").value.trim();if(!name){alert("준비물 이름을 입력해주세요.");return}let memo=$("mMemo").value.trim();if(editMat)mats=mats.map(m=>m.id===editMat?{...m,name,memo,updatedAt:new Date().toISOString()}:m);else mats.unshift({id:uid(),name,memo,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});save();closeMatModal();render()}
