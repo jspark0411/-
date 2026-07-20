@@ -1,58 +1,322 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>업무노트</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#18181b"><link rel="apple-touch-icon" href="icon.svg"><style>
-:root{--bg:#f4f4f5;--card:#fff;--txt:#18181b;--mut:#71717a;--line:#e4e4e7;--dark:#18181b;--red:#dc2626;--green:#15803d;--greenBg:#dcfce7;--blue:#1d4ed8;--blueBg:#dbeafe}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{max-width:980px;margin:0 auto;padding:10px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.03)}.head{background:var(--dark);color:#fff;border-radius:22px;padding:17px;margin-bottom:10px}.head h1{margin:4px 0 5px;font-size:24px}.head p{margin:0;color:#d4d4d8;font-size:13px}.row{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap}button{border:0;border-radius:15px;padding:10px 12px;background:var(--dark);color:#fff;font-weight:800;font-size:15px}button.sec{background:#fff;color:var(--dark);border:1px solid var(--line)}button.danger{background:var(--red)}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:15px;padding:11px 12px;font-size:15px;background:#fff}textarea{min-height:120px;resize:vertical}.label{display:block;font-size:13px;font-weight:900;color:#3f3f46;margin-bottom:5px}.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.menu button,.tabs button{background:#fff;color:var(--dark);border:1px solid var(--line)}.menu button.on,.tabs button.on{background:var(--dark);color:#fff}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.tabs.two{grid-template-columns:1fr 1fr}.cal{padding:10px}.calHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}.calTitle{font-size:16px;font-weight:900}.calNav{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.calNav button{font-size:12px;padding:7px 8px;border-radius:12px}.week,.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.week div{text-align:center;color:var(--mut);font-size:11px;font-weight:900}.day{position:relative;min-height:36px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#111;text-align:left;padding:4px}.day.out{opacity:.35}.day.sel{outline:3px solid var(--dark);outline-offset:-3px}.num{font-size:12px;font-weight:900}.dot{position:absolute;right:3px;top:3px;min-width:16px;height:16px;border-radius:99px;background:var(--red);color:#fff;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 4px}.fold{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px dashed var(--line);border-radius:16px;padding:10px;color:var(--mut);font-size:13px;font-weight:800}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.sum{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px}.sum small{display:block;color:var(--mut);font-weight:900}.sum b{font-size:16px}.listTitle{display:flex;justify-content:space-between;align-items:center;margin:2px 0 9px}.listTitle h2{margin:0;font-size:19px}.listTitle span{font-size:13px;color:var(--mut);font-weight:800}.task,.procCard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:10px}.taskTitle{font-size:16px;font-weight:900;margin:7px 0 4px}.meta{font-size:13px;color:var(--mut);line-height:1.5}.badge{display:inline-flex;padding:5px 10px;border-radius:99px;background:#f4f4f5;color:#52525b;font-size:12px;font-weight:900}.badge.g{background:var(--greenBg);color:var(--green)}.badge.b{background:var(--blueBg);color:var(--blue)}.tag{display:inline-flex;padding:4px 8px;border-radius:99px;background:#f4f4f5;color:#52525b;font-size:11px;font-weight:900;margin:6px 5px 0 0}.progTxt{text-align:right;font-size:12px;color:var(--mut);font-weight:900}.bar{height:8px;background:#e4e4e7;border-radius:99px;overflow:hidden}.bar div{height:100%;background:#18181b}.taskTop{display:flex;justify-content:space-between;gap:12px;align-items:center}.prog{min-width:105px}.controls{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center}.controls h3{grid-column:1/-1;margin:0;font-size:16px}.empty{text-align:center;color:var(--mut);padding:28px 12px}.detailTitle{font-size:23px;font-weight:900;margin:8px 0}.memo,.content{white-space:pre-wrap;background:#f4f4f5;border-radius:16px;padding:12px;margin-top:10px;color:#3f3f46;font-size:14px;line-height:1.6}.check{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:9px}.check.done{background:#ecfdf5;border-color:#bbf7d0}.check.na{background:#f4f4f5;border-color:#d4d4d8}.checkRow{display:flex;gap:12px;align-items:flex-start}.state{min-width:44px;height:28px;border-radius:99px;border:1px solid #a1a1aa;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#71717a}.check.done .state{background:#22c55e;border-color:#22c55e;color:#fff}.check.na .state{background:#71717a;border-color:#71717a;color:#fff}.ct{font-weight:900}.cd{font-size:13px;color:#71717a;margin-top:4px}.checkBtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;padding-left:56px}.checkBtns button{background:#fff;color:#3f3f46;border:1px solid var(--line);padding:9px}.checkBtns button.sel.d{background:#22c55e;color:#fff;border-color:#22c55e}.checkBtns button.sel.n{background:#71717a;color:#fff;border-color:#71717a}.modalBg{display:none;position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.42);padding:16px;align-items:center;justify-content:center}.modalBg.show{display:flex}.modal{width:100%;max-width:560px;max-height:92vh;overflow:auto;background:#fff;border-radius:26px;padding:22px}.modal h2{margin:0 0 12px}.form{display:grid;gap:10px}.opts{display:grid;gap:8px;background:#fafafa;border:1px solid var(--line);border-radius:18px;padding:12px}.opt{display:flex;gap:9px;align-items:center;font-size:14px;font-weight:800;color:#3f3f46}.opt input{width:auto}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.actions.three{grid-template-columns:repeat(3,1fr)}.procPick{max-height:210px;overflow:auto}.procItem{display:flex;gap:8px;border-bottom:1px solid #eee;padding:8px 0}.procItem input{width:auto;margin-top:3px}@media(max-width:760px){.app{padding:9px}.taskTop{flex-direction:column;align-items:flex-start}.prog{width:100%}.controls{grid-template-columns:1fr}.actions,.actions.three{grid-template-columns:1fr}.checkBtns{padding-left:0}.head h1{font-size:22px}}
-</style></head><body><div id="app" class="app"></div>
-<div id="taskModal" class="modalBg"><div class="modal"><h2 id="taskModalTitle">작업 추가</h2><div class="form"><label><span class="label">날짜</span><input id="fDate" type="date"></label><label><span class="label">장비 종류</span><select id="fType" onchange="renderProcChoices()"></select></label><label><span class="label">장비명</span><input id="fTool" placeholder="예: ACT-01"></label><label><span class="label">작업명</span><input id="fWork" placeholder="예: Soft Ver. Up"></label><div><span class="label">작업 옵션</span><div class="opts"><label class="opt"><input id="fRemain" type="checkbox">잔건 작업</label><label class="opt"><input id="fSoft" type="checkbox">Soft Ver. Up</label><label class="opt"><input id="fPass" type="checkbox">반출입증 필요</label></div></div><div><span class="label">수순서 선택</span><div class="opts"><label class="opt"><input id="fAllProc" type="checkbox" onchange="renderProcChoices()">다른 장비 수순서도 함께 보기</label><div id="procChoices" class="procPick"></div></div></div><label><span class="label">메모</span><textarea id="fMemo"></textarea></label></div><div class="actions"><button onclick="saveTask()">저장</button><button class="sec" onclick="closeTaskModal()">취소</button></div></div></div>
-<div id="procModal" class="modalBg"><div class="modal"><h2 id="procModalTitle">수순서 등록</h2><div class="form"><label><span class="label">수순서 제목</span><input id="pTitle"></label><div><span class="label">적용 장비 종류</span><div id="pTypes" class="opts"></div></div><label><span class="label">수순서 내용</span><textarea id="pContent"></textarea></label></div><div class="actions"><button onclick="saveProc()">저장</button><button class="sec" onclick="closeProcModal()">취소</button></div></div></div>
-<div id="doneModal" class="modalBg"><div class="modal"><h2>모든 항목이 완료되었습니다.</h2><p style="color:#52525b">이 작업을 어떻게 처리할까요?</p><div class="actions three"><button onclick="markDone()">완료 처리</button><button class="danger" onclick="deleteSelected()">삭제</button><button class="sec" onclick="closeDoneModal()">취소</button></div></div></div>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>업무노트</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#18181b">
+<style>
+:root{--bg:#f4f4f5;--card:#fff;--text:#18181b;--muted:#71717a;--line:#e4e4e7;--dark:#18181b;--soft:#f9fafb;--ok:#16a34a;--warn:#f59e0b;--danger:#dc2626}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
+.app{max-width:760px;margin:0 auto;min-height:100vh;padding:14px 14px 90px}
+.top{position:sticky;top:0;z-index:10;background:rgba(244,244,245,.94);backdrop-filter:blur(10px);padding:10px 0 12px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.brand h1{font-size:22px;margin:0}.brand small{color:var(--muted)}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:8px}.nav button{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:14px;padding:12px 8px;font-weight:800}.nav button.on{background:var(--dark);color:#fff;border-color:var(--dark)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.wrap{flex-wrap:wrap}.gap{gap:8px}
+.card,.procCard,.matCard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+button{border:0;border-radius:12px;padding:11px 13px;font-weight:800;background:var(--dark);color:#fff;cursor:pointer}button.secondary{background:#fff;color:var(--text);border:1px solid var(--line)}button.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}button.danger{background:var(--danger)}button.mini{font-size:12px;padding:7px 10px;border-radius:10px}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:inherit;background:#fff}textarea{min-height:120px;resize:vertical}label{font-size:13px;color:var(--muted);font-weight:800;display:block;margin:12px 0 6px}
+.checkRow,.optionRow,.choiceRow{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;margin:7px 0}.checkRow input,.optionRow input,.choiceRow input{width:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.meta{color:var(--muted);font-size:13px}.title{font-weight:900}.taskTitle{font-weight:900;font-size:16px}.pill{display:inline-flex;align-items:center;border-radius:999px;background:#f4f4f5;border:1px solid var(--line);padding:4px 8px;font-size:12px;font-weight:800;margin:3px 3px 0 0}.pill.ok{background:#ecfdf5;color:#047857;border-color:#bbf7d0}.pill.warn{background:#fffbeb;color:#a16207;border-color:#fde68a}
+.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin:16px 0 8px}.sectionTitle h2{font-size:18px;margin:0}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.sum{background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px}.sum small{display:block;color:var(--muted);font-weight:700}.sum b{font-size:17px}
+.empty{text-align:center;color:var(--muted);padding:26px 14px}
+.modalBg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;padding:18px}.modalBg.show{display:flex}.modal{background:#fff;border-radius:20px;width:min(760px,100%);margin:auto;max-height:92vh;overflow:auto;padding:16px}.modal h2{margin:0 0 12px}
+details{background:#fff;border:1px solid var(--line);border-radius:16px;margin:10px 0;overflow:hidden}summary{padding:14px;font-weight:900;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}summary::-webkit-details-marker{display:none}.detailsBody{border-top:1px solid var(--line);padding:12px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.tabs button{background:#fff;color:#18181b;border:1px solid var(--line);font-size:12px;padding:10px 6px}.tabs button.on{background:#18181b;color:#fff}
+.checkItem{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;margin:9px 0}.checkItem .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.checkItem .actions button{background:#fff;color:#18181b;border:1px solid var(--line)}.checkItem .actions button.on.done{background:#16a34a;color:#fff;border-color:#16a34a}.checkItem .actions button.on.na{background:#71717a;color:#fff;border-color:#71717a}
+.calHead{display:flex;justify-content:space-between;align-items:center;margin:8px 0}.calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.dayName,.day{font-size:12px;text-align:center}.dayName{color:var(--muted);font-weight:800}.day{background:#fff;border:1px solid var(--line);border-radius:10px;min-height:36px;padding:4px;position:relative}.day.on{background:#18181b;color:#fff}.badge{display:inline-block;min-width:16px;height:16px;border-radius:99px;background:#ef4444;color:white;font-size:10px;line-height:16px;margin-top:2px}
+.filter{display:flex;overflow:auto;gap:6px;padding-bottom:4px}.filter button{white-space:nowrap;background:#fff;color:#18181b;border:1px solid var(--line);padding:8px 10px}.filter button.on{background:#18181b;color:white}
+.notice{font-size:13px;background:#f8fafc;border:1px dashed #cbd5e1;padding:11px;border-radius:14px;color:#475569}
+@media(max-width:420px){.app{padding:10px 10px 80px}.summary{grid-template-columns:1fr 1fr 1fr}.grid4{grid-template-columns:repeat(2,1fr)}.tabs{grid-template-columns:repeat(4,1fr)}.modalBg{padding:8px}.modal{border-radius:18px;padding:14px}.brand h1{font-size:20px}}
+</style>
+</head>
+<body><div id="app" class="app"></div>
+
+<div id="taskModal" class="modalBg"><div class="modal">
+  <h2 id="taskModalTitle">작업 추가</h2>
+  <label>날짜</label><input id="fDate" type="date">
+  <label>장비 종류</label><select id="fType" onchange="renderProcChoices();refreshTaskMaterialSummary()"></select>
+  <label>장비명</label><input id="fTool" placeholder="예: ACT01">
+  <label>작업명</label><input id="fWork" placeholder="예: 1-1 module 복원">
+  <label>작업 옵션</label>
+  <div class="grid2">
+    <label class="optionRow"><input id="fRemain" type="checkbox"> 잔건 작업</label>
+    <label class="optionRow"><input id="fSoft" type="checkbox"> Soft Ver. Up</label>
+    <label class="optionRow"><input id="fPass" type="checkbox"> 반출입증 필요</label>
+    <label class="optionRow"><input id="fPartsDrop" type="checkbox"> 파츠 떨구기</label>
+  </div>
+  <details>
+    <summary><span id="procSummary">수순서 0개 선택됨</span><span>›</span></summary>
+    <div class="detailsBody">
+      <label class="optionRow"><input id="fAllProc" type="checkbox" onchange="renderProcChoices()"> 다른 장비 수순서도 함께 보기</label>
+      <div id="procChoices"></div>
+    </div>
+  </details>
+  <details>
+    <summary><span id="matSummary">준비물 우리 0개 / 고객 0개</span><span>›</span></summary>
+    <div class="detailsBody">
+      <div class="notice">수순서에 연결된 준비물은 자동 반영됩니다. 이 작업에만 필요한 준비물은 아래에서 추가로 선택하거나 직접 추가하세요.</div>
+      <div id="taskMatChoices"></div>
+      <label>작업별 직접 추가</label>
+      <div class="grid2"><input id="directMatName" placeholder="준비물 이름"><select id="directMatKind"><option value="ours">우리</option><option value="customer">고객</option></select></div>
+      <button class="secondary" onclick="addDirectMaterial()" style="margin-top:8px">+ 직접 추가</button>
+      <div id="directMatList"></div>
+    </div>
+  </details>
+  <label>메모</label><textarea id="fMemo" placeholder="필요 시 메모"></textarea>
+  <div class="row" style="margin-top:14px"><button class="secondary" onclick="history.back()">취소</button><button onclick="saveTask()">저장</button></div>
+</div></div>
+
+<div id="procModal" class="modalBg"><div class="modal">
+  <h2 id="procModalTitle">수순서 등록</h2>
+  <label>수순서 제목</label><input id="pTitle" placeholder="예: 1-1 module 복원">
+  <label>적용 장비 종류</label>
+  <label class="optionRow"><input id="pAllTypes" type="checkbox" onchange="toggleAllProcTypes(this.checked)"> 전체선택</label>
+  <div id="pTypes" class="grid4"></div>
+  <label>수순서 내용</label><textarea id="pContent" placeholder="수순서 내용을 입력하세요"></textarea>
+  <details open>
+    <summary><span>연결 준비물</span><span>›</span></summary>
+    <div class="detailsBody" id="pMatChoices"></div>
+  </details>
+  <div class="row" style="margin-top:14px"><button class="secondary" onclick="history.back()">취소</button><button onclick="saveProc()">저장</button></div>
+</div></div>
+
+<div id="matModal" class="modalBg"><div class="modal">
+  <h2 id="matModalTitle">준비물 등록</h2>
+  <label>준비물 이름</label><input id="mName" placeholder="예: 노트북">
+  <label>메모</label><textarea id="mMemo" placeholder="선택사항"></textarea>
+  <div id="matDeleteArea" style="margin-top:12px"></div>
+  <div class="row" style="margin-top:14px"><button class="secondary" onclick="history.back()">취소</button><button onclick="saveMat()">저장</button></div>
+</div></div>
+
+<div id="doneModal" class="modalBg"><div class="modal">
+  <h2>작업 완료</h2>
+  <p class="meta">모든 항목이 완료 또는 해당 없음으로 처리되었습니다.</p>
+  <div class="grid2"><button class="secondary" onclick="finishKeep()">완료로 유지</button><button class="danger" onclick="finishDelete()">삭제</button></div>
+  <button class="ghost" onclick="history.back()" style="width:100%;margin-top:8px">취소</button>
+</div></div>
+
 <script>
-const KEY="worknote-v10";const TYPES=["ACT","LITHIUS","Pro","V","Z","AP","3G","DICE"];const B=[["b1","허가서 업로드","작업 허가서 업로드 완료 확인"],["b2","기본 서류 준비","KYM 시트, 이것만은 반드시 지킵니다 시트, 온콜라벨, 작업보고서"],["b3","작업수순서·도면·관련 자료 출력","작업에 필요한 자료 출력 완료 확인"],["b4","Spec 확인","작업 전 기준 Spec 확인"],["b5","Tool 위치 확인","필요한 Tool 위치 확인"]].map(x=>({id:x[0],title:x[1],desc:x[2]}));const BO={pass:[{id:"bPass",title:"반출입증 준비",desc:"반출입 필요 시 반출입 신청, 승인 확인, 반출입증 출력"}],soft:[{id:"b7",title:"고객 메일 송부",desc:"Soft Ver. Up 시 고객 메일 송부"}]};const A=[["a1","고객 청구시간 확인","작업 후 청구 가능 시간 확인"],["a2","Tool 위치 변경 시 인폼","Tool 위치가 변경된 경우 관련자에게 공유"],["a3","Work Order 작성","작업 완료 후 Work Order 작성"]].map(x=>({id:x[0],title:x[1],desc:x[2]}));const AO={remain:[{id:"aRemain",title:"잔건 처리",desc:"잔건 작업 시 잔건 시트, CT 홈페이지, TSR 승인, WISDOM 처리"}],soft:[{id:"aInfo",title:"Inform 메일",desc:"Soft Ver. Up 시 Inform 메일 송부"},{id:"aPara",title:"Para Compare",desc:"Soft Ver. Up 시 Para Compare 수행"}]};const ALL=[...B,...BO.pass,...BO.soft,...A,...AO.remain,...AO.soft];let tasks=[],procs=[],view="tasks",tab="before",selected=null,editTask=null,editProc=null,selDate=null,dateOn=false,calY=new Date().getFullYear(),calM=new Date().getMonth(),calFold=false,search="",showDone=false;const $=id=>document.getElementById(id);function today(){let d=new Date();return ds(d)}function ds(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}function esc(s){return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function title(tool,work){return tool?`[${tool}] ${work||"이름 없는 작업"}`:(work||"이름 없는 작업")}function empty(){let r={};ALL.forEach(i=>r[i.id]="pending");return r}function load(){try{let d=JSON.parse(localStorage.getItem(KEY)||"{}");tasks=(d.tasks||[]).map(nt);procs=(d.procs||[]).map(np)}catch(e){tasks=[];procs=[]}}function save(){localStorage.setItem(KEY,JSON.stringify({tasks,procs}))}function nc(c){let r=empty();Object.keys(c||{}).forEach(k=>r[k]=c[k]===true?"done":c[k]===false?"pending":(["done","na"].includes(c[k])?c[k]:"pending"));return r}function nt(t){let flags={remain:!!t.flags?.remain,soft:!!t.flags?.soft,pass:!!(t.flags?.pass||t.flags?.parts)};return {...t,type:t.type||"ACT",tool:t.tool||"",work:t.work||t.workName||"",title:title(t.tool,t.work||t.workName||t.title),flags,procIds:t.procIds||t.procedureIds||[],checks:nc(t.checks),status:t.status||"active",createdAt:t.createdAt||new Date().toISOString()}}function np(p){return {...p,id:p.id||uid(),title:p.title||"이름 없는 수순서",types:p.types||p.toolTypes||[],content:p.content||"",updatedAt:p.updatedAt||p.createdAt||new Date().toISOString(),createdAt:p.createdAt||new Date().toISOString()}}function before(t){let x=[...B];if(t.flags.pass)x.push(...BO.pass);if(t.flags.soft)x.push(...BO.soft);return x}function after(t){let x=[...A];if(t.flags.remain)x.push(...AO.remain);if(t.flags.soft)x.push(...AO.soft);return x}function items(t){return[...before(t),...after(t)]}function ok(t,i){return["done","na"].includes(t.checks?.[i.id])}function prog(t,it=items(t)){let total=it.length,done=it.filter(i=>ok(t,i)).length;return{done,total,p:total?Math.round(done/total*100):0}}function complete(t){let p=prog(t);return p.total&&p.done===p.total}function unfinished(t){return t.status!=="done"&&!complete(t)}function badge(t){let p=prog(t);if(t.status==="done")return'<span class="badge g">완료</span>';if(p.done===p.total)return'<span class="badge g">전체 체크됨</span>';if(p.done>0)return'<span class="badge b">진행중</span>';return'<span class="badge">미완료</span>'}function header(name){return `<div class="head"><div class="row"><div><small>업무노트</small><h1>${name}</h1><p>작업 체크리스트와 수순서를 한 곳에서 관리합니다.</p></div>${view==="tasks"?'<button onclick="openTaskModal()">+ 작업 추가</button>':'<button onclick="openProcModal()">+ 수순서 등록</button>'}</div></div><div class="menu"><button class="${view==="tasks"?"on":""}" onclick="setView('tasks')">작업 체크리스트</button><button class="${view==="procs"?"on":""}" onclick="setView('procs')">수순서</button></div>`}function setView(v){view=v;selected=null;history.replaceState({screen:"main"},"","#");render()}function render(){let app=$("app");if(selected){let t=tasks.find(x=>x.id===selected);if(!t){selected=null;return render()}return detail(app,t)}if(view==="procs")return procPage(app);taskPage(app)}function sortTasks(a,b){let ad=a.status==="done"||complete(a),bd=b.status==="done"||complete(b);if(ad!==bd)return ad?1:-1;let d=new Date(a.date)-new Date(b.date);if(d!==0)return d;return new Date(a.createdAt)-new Date(b.createdAt)}function taskPage(app){let kw=search.trim().toLowerCase();let vis=tasks.filter(t=>!dateOn||t.date===selDate).filter(t=>showDone||t.status!=="done").filter(t=>!kw||[t.title,t.tool,t.work,t.type,t.memo].some(v=>String(v||"").toLowerCase().includes(kw))).sort(sortTasks);let base=dateOn?tasks.filter(t=>t.date===selDate):tasks,rem=base.filter(unfinished).length;app.innerHTML=header("작업 체크리스트")+cal()+`<div class="summary"><div class="sum"><small>표시 범위</small><b>${dateOn?selDate:"전체"}</b></div><div class="sum"><small>총 작업</small><b>${base.length}건</b></div><div class="sum"><small>남은 작업</small><b>${rem}건</b></div></div><div class="listTitle"><h2>${dateOn?selDate+" 작업":"전체 작업 목록"}</h2><span>${vis.length}건</span></div>${vis.length?vis.map(card).join(""):'<div class="card empty"><b>표시할 작업이 없습니다.</b><br>작업 추가 버튼으로 등록하세요.</div>'}<div class="card controls"><h3>작업 검색 / 필터</h3><input placeholder="작업명, 장비명, 장비 종류 검색" value="${esc(search)}" oninput="search=this.value;render()"><label style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" ${showDone?"checked":""} onchange="showDone=this.checked;render()" style="width:auto">완료된 작업도 표시</label><button class="sec" onclick="clearDate()">전체 보기</button><button class="sec" onclick="deleteAll()">전체 삭제</button></div>`}function card(t){let p=prog(t);return `<div class="task" onclick="openTask('${t.id}')"><div class="taskTop"><div><div>${badge(t)} <span style="font-size:12px;color:#71717a;font-weight:900">${p.done}/${p.total}</span></div><div class="taskTitle">${esc(t.title)}</div><div class="meta">${esc(t.date)} · 장비 종류: ${esc(t.type)} · 작업명: ${esc(t.work||"미입력")}</div>${tags(t)}</div><div class="prog"><div class="progTxt">${p.p}%</div><div class="bar"><div style="width:${p.p}%"></div></div></div></div></div>`}function tags(t){let a=[];if(t.flags.remain)a.push("잔건");if(t.flags.soft)a.push("Soft Ver. Up");if(t.flags.pass)a.push("반출입증");if(t.procIds.length)a.push(`수순서 ${t.procIds.length}`);return a.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}function cal(){let title=`${calY}년 ${calM+1}월`;if(calFold)return `<div class="card cal"><div class="calHead"><div class="calTitle">${title}</div><div class="calNav"><button class="sec" onclick="toggleCal()">달력 펼치기</button></div></div><div class="fold"><span>${dateOn?"선택 날짜: "+selDate:"전체 작업 표시 중"}</span><button class="sec" onclick="clearDate()">전체 보기</button></div></div>`;let first=new Date(calY,calM,1),start=new Date(calY,calM,1-first.getDay()),w=["일","월","화","수","목","금","토"],cells=[];for(let i=0;i<42;i++){let d=new Date(start);d.setDate(start.getDate()+i);let s=ds(d),remain=tasks.filter(t=>t.date===s).filter(unfinished).length;cells.push(`<button class="day ${d.getMonth()===calM?"":"out"} ${dateOn&&s===selDate?"sel":""}" onclick="pickDate('${s}')"><span class="num">${d.getDate()}</span>${remain?`<span class="dot">${remain}</span>`:""}</button>`)}return `<div class="card cal"><div class="calHead"><div class="calTitle">${title}</div><div class="calNav"><button class="sec" onclick="moveM(-1)">‹</button><button class="sec" onclick="goToday()">오늘</button><button class="sec" onclick="moveM(1)">›</button><button class="sec" onclick="toggleCal()">접기</button></div></div><div class="week">${w.map(x=>`<div>${x}</div>`).join("")}</div><div class="grid">${cells.join("")}</div><p style="font-size:12px;color:#71717a;margin:8px 0 0">빨간 숫자는 완료되지 않은 작업 개수입니다.</p></div>`}function detail(app,t){let p=prog(t),bp=prog(t,before(t)),ap=prog(t,after(t));app.innerHTML=header("작업 상세")+`<button class="sec" onclick="goList()" style="margin-bottom:10px">← 작업 리스트로</button><div class="card"><div class="row"><div><div>${badge(t)} <span class="meta">${esc(t.date)}</span></div><div class="detailTitle">${esc(t.title)}</div><div class="meta">장비 종류: ${esc(t.type)} · 장비명: ${esc(t.tool||"미입력")} · 작업명: ${esc(t.work||"미입력")}</div>${tags(t)}${t.memo?`<div class="memo">${esc(t.memo)}</div>`:""}</div><div style="display:flex;gap:8px"><button onclick="openTaskModal('${t.id}')">수정</button><button class="danger" onclick="deleteTask('${t.id}')">삭제</button></div></div><div style="margin-top:14px"><div class="row" style="font-size:14px;color:#52525b;font-weight:900"><span>전체 진행률</span><span>${p.done}/${p.total} · ${p.p}%</span></div><div class="bar" style="height:12px"><div style="width:${p.p}%"></div></div></div></div><div class="tabs"><button class="${tab==="before"?"on":""}" onclick="tab='before';render()">작업 전 ${bp.done}/${bp.total}</button><button class="${tab==="after"?"on":""}" onclick="tab='after';render()">작업 후 ${ap.done}/${ap.total}</button><button class="${tab==="procedures"?"on":""}" onclick="tab='procedures';render()">수순서</button></div>${tab==="before"?checks(t,before(t)):tab==="after"?checks(t,after(t)):taskProcs(t)}`}function checks(t,it){return it.map((i,n)=>check(t,i,n+1)).join("")}function check(t,i,n){let s=t.checks[i.id]||"pending",cls=s==="done"?"done":s==="na"?"na":"",txt=s==="done"?"완료":s==="na"?"N/A":"미완료";return `<div class="check ${cls}"><div class="checkRow"><span class="state">${txt}</span><span><div class="ct">${n}. ${esc(i.title)}</div><div class="cd">${esc(i.desc)}</div></span></div><div class="checkBtns"><button class="d ${s==="done"?"sel":""}" onclick="setState('${i.id}','done')">완료</button><button class="n ${s==="na"?"sel":""}" onclick="setState('${i.id}','na')">해당 없음</button></div></div>`}function taskProcs(t){let list=t.procIds.map(id=>procs.find(p=>p.id===id)).filter(Boolean);return list.length?list.map(p=>`<div class="card"><h2 style="font-size:18px;margin:0 0 6px">[${esc(p.types.join(", "))}] ${esc(p.title)}</h2><div class="content">${esc(p.content)}</div></div>`).join(""):'<div class="card empty"><b>선택된 수순서가 없습니다.</b><br>작업 생성 시 수순서를 선택할 수 있습니다.</div>'}function procPage(app){app.innerHTML=header("수순서")+`<div class="listTitle"><h2>등록된 수순서</h2><span>${procs.length}건</span></div>${procs.length?procs.slice().sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt)).map(p=>`<div class="procCard" onclick="viewProc('${p.id}')"><div class="taskTitle">[${esc(p.types.join(", ")||"미지정")}] ${esc(p.title)}</div><div class="meta">${esc(p.content.slice(0,90))}${p.content.length>90?"...":""}</div></div>`).join(""):'<div class="card empty"><b>등록된 수순서가 없습니다.</b><br>상단의 + 수순서 등록 버튼으로 추가하세요.</div>'}`}function viewProc(id){let p=procs.find(x=>x.id===id);if(!p)return;$("app").innerHTML=header("수순서 상세")+`<button class="sec" onclick="render()" style="margin-bottom:10px">← 목록으로</button><div class="card"><h2 style="margin:0 0 8px">[${esc(p.types.join(", ")||"미지정")}] ${esc(p.title)}</h2><div class="content">${esc(p.content)}</div><div class="actions"><button onclick="openProcModal('${p.id}')">수정</button><button class="danger" onclick="deleteProc('${p.id}')">삭제</button></div></div>`}function openTask(id){selected=id;tab="before";history.pushState({screen:"detail",id},"","#task-"+id);render()}function goList(){selected=null;history.replaceState({screen:"main"},"","#");render()}function anyModalOpen(){return ["taskModal","procModal","doneModal"].some(id=>$(id)?.classList.contains("show"))}
-function closeTopModal(){
- if($("doneModal")?.classList.contains("show")){closeDoneModal();return true}
- if($("taskModal")?.classList.contains("show")){closeTaskModal();return true}
- if($("procModal")?.classList.contains("show")){closeProcModal();return true}
- return false;
+const KEY="worknote-v10"; // 기존 데이터 유지를 위해 v10 키 유지
+const TYPES=["ACT","LITHIUS","Pro","V","Z","AP","3G","DICE"];
+const B=[["b1","허가서 업로드","작업 허가서 업로드 완료 확인"],["b2","기본 서류 준비","KYM 시트, 이것만은 반드시 지킵니다 시트, 온콜라벨, 작업보고서"],["b3","작업수순서·도면·관련 자료 출력","작업에 필요한 자료 출력 완료 확인"],["b4","Spec 확인","작업 전 기준 Spec 확인"],["b5","Tool 위치 확인","필요한 Tool 위치 확인"]].map(x=>({id:x[0],title:x[1],desc:x[2]}));
+const BO={pass:[{id:"bPass",title:"반출입증 준비",desc:"반출입 필요 시 반출입 신청, 승인 확인, 반출입증 출력"}],soft:[{id:"b7",title:"고객 메일 송부",desc:"Soft Ver. Up 시 고객 메일 송부"}]};
+const A=[["a1","고객 청구시간 확인","고객 청구시간 확인"],["a2","Tool 위치 변경 시 인폼","Tool 위치 변경 시 관계자에게 인폼"],["a3","Work Order 작성","Work Order 작성 완료 확인"]].map(x=>({id:x[0],title:x[1],desc:x[2]}));
+const AO={remain:[{id:"aRemain",title:"잔건 처리",desc:"잔건 작업 시 잔건 시트, CT 홈페이지, TSR 승인, WISDOM 처리"}],soft:[{id:"aInfo",title:"Inform 메일",desc:"Soft Ver. Up 시 Inform 메일 송부"},{id:"aPara",title:"Para Compare",desc:"Soft Ver. Up 시 Para Compare 수행"}],partsDrop:[{id:"aPartsDrop",title:"파츠 떨구기",desc:"필요 파츠 떨구기 처리 완료 확인"}]};
+const ALL=[...B,...BO.pass,...BO.soft,...A,...AO.remain,...AO.soft,...AO.partsDrop];
+
+let tasks=[],procs=[],mats=[],view="tasks",tab="before",selected=null,selectedProc=null,editTask=null,editProc=null,editMat=null;
+let selDate=null,dateOn=false,calY=new Date().getFullYear(),calM=new Date().getMonth(),calFold=false,search="",showDone=false;
+let procOpen=true,matOpen=false,procFilters=[],directDraft=[];
+
+const $=id=>document.getElementById(id);
+function today(){let d=new Date();return ds(d)}
+function ds(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
+function esc(s){return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function title(tool,work){return tool?`[${tool}] ${work||"이름 없는 작업"}`:(work||"이름 없는 작업")}
+function empty(){let r={};ALL.forEach(i=>r[i.id]="pending");return r}
+function matKindName(k){return k==="customer"?"고객":"우리"}
+function typeLabel(types){let arr=types||[];return arr.length===TYPES.length?"전체 장비":arr.join(", ")||"미지정"}
+
+function nc(c){let r=empty();Object.keys(c||{}).forEach(k=>r[k]=c[k]===true?"done":c[k]===false?"pending":(["done","na"].includes(c[k])?c[k]:"pending"));return r}
+function normalizeMat(m){return {id:m.id||uid(),name:m.name||m.title||"이름 없는 준비물",kind:m.kind==="customer"?"customer":"ours",memo:m.memo||"",createdAt:m.createdAt||new Date().toISOString(),updatedAt:m.updatedAt||m.createdAt||new Date().toISOString()}}
+function legacyKind(id){let m=mats.find(x=>x.id===id);return m?.kind==="customer"?"customer":"ours"}
+function normalizeProc(p){let oldIds=p.materialIds||[];let pm=p.materials||p.procMaterials;if(!pm){pm={ours:[],customer:[]};oldIds.forEach(id=>pm[legacyKind(id)].push(id))}return {...p,id:p.id||uid(),title:p.title||"이름 없는 수순서",types:(p.types||p.toolTypes||[]).filter(Boolean),content:p.content||"",materials:{ours:pm.ours||[],customer:pm.customer||[]},updatedAt:p.updatedAt||p.createdAt||new Date().toISOString(),createdAt:p.createdAt||new Date().toISOString()}}
+function normalizeTask(t){
+ let flags={remain:!!t.flags?.remain,soft:!!t.flags?.soft,pass:!!(t.flags?.pass||t.flags?.parts),partsDrop:!!(t.flags?.partsDrop||t.flags?.dropParts)};
+ let tm=t.materials||t.taskMaterials;if(!tm){tm={ours:[],customer:[]};(t.materialIds||[]).forEach(id=>tm[legacyKind(id)].push(id))}
+ let direct=(t.directMaterials||[]).map(m=>({...m,id:m.id||uid(),kind:m.kind==="customer"?"customer":"ours"}));
+ return {...t,id:t.id||uid(),date:t.date||today(),type:t.type||"ACT",tool:t.tool||"",work:t.work||t.workName||"",title:title(t.tool,t.work||t.workName||t.title),memo:t.memo||"",flags,procIds:t.procIds||t.procedureIds||[],materials:{ours:tm.ours||[],customer:tm.customer||[]},directMaterials:direct,materialChecks:t.materialChecks||{},checks:nc(t.checks),status:t.status||"active",createdAt:t.createdAt||new Date().toISOString()}
 }
-function pushModalState(id){history.pushState({screen:"modal",id},"","#"+id)}
-window.addEventListener("popstate",()=>{
- if(closeTopModal()) return;
- if(selected){selected=null;render();return}
+function load(){try{let d=JSON.parse(localStorage.getItem(KEY)||"{}");mats=(d.mats||d.materials||[]).map(normalizeMat);procs=(d.procs||[]).map(normalizeProc);tasks=(d.tasks||[]).map(normalizeTask)}catch(e){tasks=[];procs=[];mats=[]}}
+function save(){localStorage.setItem(KEY,JSON.stringify({tasks,procs,mats:mats.map(({kind,...m})=>m)}))}
+
+function before(t){let x=[...B];if(t.flags.pass)x.push(...BO.pass);if(t.flags.soft)x.push(...BO.soft);return x}
+function after(t){let x=[...A];if(t.flags.remain)x.push(...AO.remain);if(t.flags.soft)x.push(...AO.soft);if(t.flags.partsDrop)x.push(...AO.partsDrop);return x}
+function items(t){return [...before(t),...after(t)]}
+function doneCount(list,t){return list.filter(i=>["done","na"].includes(t.checks?.[i.id])).length}
+function complete(t){let l=items(t);return l.length&&doneCount(l,t)===l.length}
+function unfinished(t){return t.status!=="done"&&!complete(t)}
+function procMats(procIds){let out={ours:new Set(),customer:new Set()};(procIds||[]).forEach(pid=>{let p=procs.find(x=>x.id===pid);(p?.materials?.ours||[]).forEach(id=>out.ours.add(id));(p?.materials?.customer||[]).forEach(id=>out.customer.add(id))});return {ours:[...out.ours],customer:[...out.customer]}}
+function taskMats(t){
+ let pms=procMats(t.procIds), tm=t.materials||{ours:[],customer:[]};
+ let ours=[...new Set([...pms.ours,...(tm.ours||[])])].map(id=>({...mats.find(m=>m.id===id),kind:"ours"})).filter(m=>m.id);
+ let customer=[...new Set([...pms.customer,...(tm.customer||[])])].map(id=>({...mats.find(m=>m.id===id),kind:"customer"})).filter(m=>m.id);
+ let direct=(t.directMaterials||[]).map(m=>({...m,id:m.id||uid(),kind:m.kind==="customer"?"customer":"ours",direct:true}));
+ let seen=new Set(), out=[];
+ [...ours,...customer,...direct].forEach(m=>{let k=m.kind+":"+m.id;if(!seen.has(k)){seen.add(k);out.push(m)}});
+ return out;
+}
+function materialSummaryFromGroups(groups,direct=[]){let ours=(groups.ours||[]).length+direct.filter(m=>m.kind!=="customer").length, cust=(groups.customer||[]).length+direct.filter(m=>m.kind==="customer").length;return `준비물 우리 ${ours}개 / 고객 ${cust}개`}
+function header(title){return `<div class="top"><div class="brand"><div><h1>업무노트</h1><small>${title}</small></div><button onclick="${view==='tasks'?'openTaskModal()':'openProcModal()'}">${view==='tasks'?'+ 작업 추가':'+ 수순서 등록'}</button></div><div class="nav"><button class="${view==='tasks'?'on':''}" onclick="view='tasks';selected=null;render()">작업 체크리스트</button><button class="${view==='procs'?'on':''}" onclick="view='procs';selected=null;render()">수순서/준비물</button></div></div>`}
+
+function render(){let app=$("app");if(selected){let t=tasks.find(x=>x.id===selected);if(!t){selected=null;return render()}return detail(app,t)}if(selectedProc){let p=procs.find(x=>x.id===selectedProc);if(!p){selectedProc=null;return render()}return procDetail(app,p)}if(view==="procs")return procPage(app);taskPage(app)}
+
+function sortTasks(a,b){let ad=a.status==="done"||complete(a),bd=b.status==="done"||complete(b);if(ad!==bd)return ad?1:-1;let d=new Date(a.date)-new Date(b.date);if(d!==0)return d;return new Date(a.createdAt)-new Date(b.createdAt)}
+function taskPage(app){
+ let kw=search.trim().toLowerCase();let vis=tasks.filter(t=>!dateOn||t.date===selDate).filter(t=>showDone||t.status!=="done").filter(t=>!kw||[t.title,t.tool,t.work,t.type,t.memo].some(v=>String(v||"").toLowerCase().includes(kw))).sort(sortTasks);
+ let base=dateOn?tasks.filter(t=>t.date===selDate):tasks,rem=base.filter(unfinished).length;
+ app.innerHTML=header("작업 체크리스트")+calendar()+`<div class="summary"><div class="sum"><small>표시 범위</small><b>${dateOn?selDate:"전체"}</b></div><div class="sum"><small>총 작업</small><b>${base.length}건</b></div><div class="sum"><small>미완료</small><b>${rem}건</b></div></div>
+ <div class="row wrap"><button class="secondary" onclick="dateOn=false;render()">전체 보기</button><label class="optionRow" style="margin:0"><input type="checkbox" ${showDone?'checked':''} onchange="showDone=this.checked;render()"> 완료된 작업도 표시</label></div>
+ <div class="sectionTitle"><h2>작업 목록</h2><span class="meta">${vis.length}건</span></div>
+ <div>${vis.length?vis.map(taskCard).join(""):'<div class="card empty">표시할 작업이 없습니다.</div>'}</div>
+ <div class="sectionTitle"><h2>작업 검색</h2></div><input placeholder="장비명, 작업명, 메모 검색" value="${esc(search)}" oninput="search=this.value;render()">`;
+}
+function taskCard(t){let l=items(t),dc=doneCount(l,t),st=t.status==="done"?"완료":complete(t)?"전체 체크됨":dc?"진행중":"미완료";return `<div class="card" onclick="openDetail('${t.id}')"><div class="row"><div><div class="taskTitle">${esc(t.title)}</div><div class="meta">${esc(t.date)} · ${esc(t.type)} · ${dc}/${l.length}</div><div>${taskTags(t)}<span class="pill ${t.status==='done'?'ok':'warn'}">${st}</span></div></div><span>›</span></div></div>`}
+function taskTags(t){let a=[`<span class="pill">${esc(t.type)}</span>`];if(t.flags.remain)a.push('<span class="pill">잔건</span>');if(t.flags.soft)a.push('<span class="pill">Soft Ver. Up</span>');if(t.flags.pass)a.push('<span class="pill">반출입증</span>');if(t.flags.partsDrop)a.push('<span class="pill">파츠 떨구기</span>');return a.join("")}
+function calendar(){
+ if(calFold)return `<div class="card"><div class="row"><b>달력</b><button class="secondary mini" onclick="calFold=false;render()">펼치기</button></div></div>`;
+ let first=new Date(calY,calM,1),last=new Date(calY,calM+1,0),start=first.getDay(),days=last.getDate();
+ let counts={};tasks.filter(unfinished).forEach(t=>counts[t.date]=(counts[t.date]||0)+1);
+ let cells="";for(let i=0;i<start;i++)cells+=`<div></div>`;for(let d=1;d<=days;d++){let date=ds(new Date(calY,calM,d)),on=dateOn&&selDate===date;cells+=`<div class="day ${on?'on':''}" onclick="selDate='${date}';dateOn=true;render()">${d}${counts[date]?`<br><span class="badge">${counts[date]}</span>`:""}</div>`}
+ return `<div class="card"><div class="calHead"><button class="secondary mini" onclick="calM--;if(calM<0){calM=11;calY--}render()">‹</button><b>${calY}.${String(calM+1).padStart(2,"0")}</b><div><button class="secondary mini" onclick="calFold=true;render()">접기</button><button class="secondary mini" onclick="calM++;if(calM>11){calM=0;calY++}render()">›</button></div></div><div class="calGrid">${["일","월","화","수","목","금","토"].map(x=>`<div class="dayName">${x}</div>`).join("")}${cells}</div></div>`;
+}
+function openDetail(id){selected=id;tab="before";history.pushState({screen:"task"},"","#task");render()}
+function goList(){selected=null;history.replaceState({screen:"main"},"","#");render()}
+
+function detail(app,t){
+ let l=items(t),dc=doneCount(l,t),tm=taskMats(t),ours=tm.filter(m=>m.kind!=="customer"),cust=tm.filter(m=>m.kind==="customer");
+ app.innerHTML=header("작업 상세")+`<div class="card"><div class="row"><button class="secondary" onclick="goList()">← 목록</button><div class="row"><button class="secondary" onclick="openTaskModal('${t.id}')">수정</button><button class="danger" onclick="deleteTask('${t.id}')">삭제</button></div></div>
+ <h2>${esc(t.title)}</h2><div class="meta">${esc(t.date)} · ${esc(t.type)}</div><div>${taskTags(t)}</div>${t.memo?`<p class="notice">${esc(t.memo)}</p>`:""}<div class="summary"><div class="sum"><small>전체</small><b>${dc}/${l.length}</b></div><div class="sum"><small>작업 전</small><b>${doneCount(before(t),t)}/${before(t).length}</b></div><div class="sum"><small>작업 후</small><b>${doneCount(after(t),t)}/${after(t).length}</b></div></div></div>
+ <div class="tabs"><button class="${tab==='before'?'on':''}" onclick="tab='before';render()">작업 전<br>${doneCount(before(t),t)}/${before(t).length}</button><button class="${tab==='after'?'on':''}" onclick="tab='after';render()">작업 후<br>${doneCount(after(t),t)}/${after(t).length}</button><button class="${tab==='mats'?'on':''}" onclick="tab='mats';render()">준비물<br>${checkedMats(t)}/${tm.length}</button><button class="${tab==='proc'?'on':''}" onclick="tab='proc';render()">수순서<br>${(t.procIds||[]).length}</button></div>
+ <div>${tab==='before'?checkList(before(t),t):tab==='after'?checkList(after(t),t):tab==='mats'?materialTab(t,ours,cust):procTab(t)}</div>`;
+}
+function checkList(list,t){return list.map(i=>{let s=t.checks?.[i.id]||"pending";return `<div class="checkItem"><div class="title">${esc(i.title)}</div><div class="meta">${esc(i.desc)}</div><div class="actions"><button class="${s==='done'?'on done':''}" onclick="setCheck('${t.id}','${i.id}','done')">완료</button><button class="${s==='na'?'on na':''}" onclick="setCheck('${t.id}','${i.id}','na')">해당 없음</button></div><div class="meta" style="margin-top:6px">${s==='pending'?'미완료':s==='done'?'완료':'해당 없음'}</div></div>`}).join("")}
+function setCheck(tid,cid,val){let t=tasks.find(x=>x.id===tid);if(!t)return;t.checks=t.checks||{};t.checks[cid]=t.checks[cid]===val?"pending":val;if(complete(t)){save();showDoneModal(tid)}else save();render()}
+function showDoneModal(id){selected=id;$("doneModal").classList.add("show");pushModalState("doneModal")}
+function closeDoneModal(){$("doneModal").classList.remove("show")}
+function finishKeep(){let t=tasks.find(x=>x.id===selected);if(t)t.status="done";save();closeDoneModal();render()}
+function finishDelete(){tasks=tasks.filter(t=>t.id!==selected);selected=null;save();closeDoneModal();render()}
+function checkedMats(t){return taskMats(t).filter(m=>t.materialChecks?.[m.id]).length}
+function materialTab(t,ours,cust){
+ if(!ours.length&&!cust.length)return `<div class="card empty">등록된 준비물이 없습니다.</div>`;
+ let group=(title,arr)=>`<div class="card"><div class="row"><b>${title}</b><span class="meta">${arr.filter(m=>t.materialChecks?.[m.id]).length}/${arr.length}</span></div>${arr.map(m=>`<label class="checkRow"><input type="checkbox" ${t.materialChecks?.[m.id]?'checked':''} onchange="toggleMatCheck('${t.id}','${m.id}')"><span><b>${esc(m.name)}</b>${m.memo?`<br><span class="meta">${esc(m.memo)}</span>`:""}</span></label>`).join("")}</div>`;
+ return group("우리",ours)+group("고객",cust);
+}
+function toggleMatCheck(tid,mid){let t=tasks.find(x=>x.id===tid);if(!t)return;t.materialChecks=t.materialChecks||{};t.materialChecks[mid]=!t.materialChecks[mid];save();render()}
+function procTab(t){let ps=(t.procIds||[]).map(id=>procs.find(p=>p.id===id)).filter(Boolean);return ps.length?ps.map(p=>`<div class="card"><div class="title">[${esc(typeLabel(p.types))}] ${esc(p.title)}</div><pre style="white-space:pre-wrap;font-family:inherit">${esc(p.content)}</pre></div>`).join(""):'<div class="card empty">연결된 수순서가 없습니다.</div>'}
+function deleteTask(id){if(confirm("작업을 삭제할까요?")){tasks=tasks.filter(t=>t.id!==id);selected=null;save();render()}}
+
+
+function toggleProcFilter(type){
+ if(type==="전체"){procFilters=[];render();return}
+ if(procFilters.includes(type))procFilters=procFilters.filter(x=>x!==type);
+ else procFilters.push(type);
  render();
-});function openTaskModal(id=null){
- editTask=id;
- let t=id?tasks.find(x=>x.id===id):null;
+}
+function procFilterOn(type){return type==="전체"?procFilters.length===0:procFilters.includes(type)}
+function procFilterLabel(){return procFilters.length?procFilters.join(", "):"전체"}
+function procPage(app){
+ app.innerHTML=header("수순서/준비물")+`
+ <details ${procOpen?'open':''} ontoggle="procOpen=this.open">
+  <summary><span>수순서</span><span>${procs.length}건</span></summary>
+  <div class="detailsBody">
+   <div class="row"><button onclick="openProcModal()">+ 수순서 등록</button></div>
+   <div class="sectionTitle"><h2>장비 필터</h2></div>
+   <div class="filter">${["전체",...TYPES].map(t=>`<button class="${procFilterOn(t)?'on':''}" onclick="toggleProcFilter('${t}')">${t}</button>`).join("")}</div><div class="meta" style="margin-top:6px">현재 필터: ${esc(procFilterLabel())}</div>
+   <div>${procList()}</div>
+  </div>
+ </details>
+ <details ${matOpen?'open':''} ontoggle="matOpen=this.open">
+  <summary><span>준비물</span><span>${mats.length}건</span></summary>
+  <div class="detailsBody">
+   <div class="row"><button onclick="openMatModal()">+ 준비물 등록</button></div>
+   <div class="sectionTitle"><h2>준비물 목록</h2></div>${matList()}
+  </div>
+ </details>`;
+}
+function procList(){let list=procs.filter(p=>!procFilters.length||procFilters.some(f=>(p.types||[]).includes(f))).sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt));return list.length?list.map(p=>`<div class="procCard" onclick="openProcDetail('${p.id}')"><div class="taskTitle">[${esc(typeLabel(p.types))}] ${esc(p.title)}</div><div class="meta">연결 준비물 ${((p.materials?.ours||[]).length+(p.materials?.customer||[]).length)}개 · ${esc((p.content||"").slice(0,70))}${(p.content||"").length>70?"...":""}</div></div>`).join(""):'<div class="card empty">표시할 수순서가 없습니다.</div>'}
+function matList(){let list=[...mats].sort((a,b)=>a.name.localeCompare(b.name,"ko"));return list.length?list.map(m=>`<div class="matCard" onclick="openMatModal('${m.id}')"><div class="row"><div><div class="title">${esc(m.name)}</div>${m.memo?`<div class="meta">${esc(m.memo)}</div>`:""}</div><span>›</span></div></div>`).join(""):'<div class="card empty">등록된 준비물이 없습니다.</div>'}
+function openProcDetail(id){selectedProc=id;history.pushState({screen:"proc"},"","#proc");render()}
+function procDetail(app,p){app.innerHTML=header("수순서 상세")+`<div class="card"><div class="row"><button class="secondary" onclick="selectedProc=null;history.replaceState({screen:'main'},'','#');render()">← 목록</button><div><button class="secondary" onclick="openProcModal('${p.id}')">수정</button> <button class="danger" onclick="deleteProc('${p.id}')">삭제</button></div></div><h2>[${esc(typeLabel(p.types))}] ${esc(p.title)}</h2><pre style="white-space:pre-wrap;font-family:inherit">${esc(p.content)}</pre></div><div class="card"><h3>연결 준비물</h3>${procMaterialPreview(p)}</div>`}
+function procMaterialPreview(p){let ids={ours:p.materials?.ours||[],customer:p.materials?.customer||[]};let total=ids.ours.length+ids.customer.length;if(!total)return '<div class="meta">연결된 준비물이 없습니다.</div>';return ["ours","customer"].map(k=>{let a=ids[k].map(id=>mats.find(m=>m.id===id)).filter(Boolean);return a.length?`<b>${matKindName(k)}</b>${a.map(m=>`<div class="checkRow">${esc(m.name)}</div>`).join("")}`:""}).join("")}
+function deleteProc(id){if(confirm("수순서를 삭제할까요? 연결된 작업의 수순서 탭에서도 더 이상 보이지 않습니다.")){procs=procs.filter(p=>p.id!==id);tasks=tasks.map(t=>({...t,procIds:(t.procIds||[]).filter(pid=>pid!==id)}));selectedProc=null;save();render()}}
+
+function openTaskModal(id=null){
+ editTask=id;let t=id?tasks.find(x=>x.id===id):null;directDraft=t?JSON.parse(JSON.stringify(t.directMaterials||[])):[];
  $("taskModalTitle").textContent=t?"작업 수정":"작업 추가";
  $("fDate").value=t?.date||(dateOn?selDate:today());
  $("fType").innerHTML=TYPES.map(tp=>`<option ${t?.type===tp?"selected":""}>${tp}</option>`).join("");
- $("fTool").value=t?.tool||"";
- $("fWork").value=t?.work||"";
- $("fMemo").value=t?.memo||"";
- $("fRemain").checked=!!t?.flags?.remain;
- $("fSoft").checked=!!t?.flags?.soft;
- $("fPass").checked=!!t?.flags?.pass;
- $("fAllProc").checked=false;
- renderProcChoices(t?.procIds||[]);
- $("taskModal").classList.add("show");
- pushModalState("taskModal");
+ $("fTool").value=t?.tool||"";$("fWork").value=t?.work||"";$("fMemo").value=t?.memo||"";
+ $("fRemain").checked=!!t?.flags?.remain;$("fSoft").checked=!!t?.flags?.soft;$("fPass").checked=!!t?.flags?.pass;$("fPartsDrop").checked=!!t?.flags?.partsDrop;
+ $("fAllProc").checked=false;renderProcChoices(t?.procIds||[]);renderTaskMatChoices(t?.materials||null);renderDirectMatList();refreshTaskMaterialSummary();
+ $("taskModal").classList.add("show");pushModalState("taskModal");
 }
-function closeTaskModal(){editTask=null;$("taskModal").classList.remove("show")}
+function closeTaskModal(){editTask=null;directDraft=[];$("taskModal").classList.remove("show")}
 function renderProcChoices(selectedIds=[]){
- let box=$("procChoices");if(!box)return;
- let type=$("fType").value||"ACT",all=$("fAllProc").checked;
- let current=editTask?tasks.find(x=>x.id===editTask):null;
- let picked=selectedIds.length?selectedIds:(current?.procIds||[]);
- let list=procs.filter(p=>all||p.types.includes(type)||picked.includes(p.id));
- box.innerHTML=list.length?list.map(p=>`<label class="procItem"><input class="procChoice" type="checkbox" value="${p.id}" ${picked.includes(p.id)?"checked":""}><span><b>[${esc(p.types.join(", "))}] ${esc(p.title)}</b><br><span class="meta">${esc(p.content.slice(0,60))}</span></span></label>`).join(""):'<div class="meta">선택 가능한 수순서가 없습니다.</div>';
+ let box=$("procChoices");if(!box)return;let type=$("fType").value||"ACT",all=$("fAllProc").checked;let current=editTask?tasks.find(x=>x.id===editTask):null;let picked=selectedIds.length?selectedIds:(current?.procIds||[]);
+ let list=procs.filter(p=>all||(p.types||[]).includes(type)||picked.includes(p.id));
+ box.innerHTML=list.length?list.map(p=>`<label class="choiceRow"><input class="procChoice" type="checkbox" value="${p.id}" ${picked.includes(p.id)?"checked":""} onchange="renderTaskMatChoices();refreshTaskMaterialSummary()"><span><b>[${esc(typeLabel(p.types))}] ${esc(p.title)}</b><br><span class="meta">연결 준비물 ${((p.materials?.ours||[]).length+(p.materials?.customer||[]).length)}개</span></span></label>`).join(""):'<div class="empty">선택 가능한 수순서가 없습니다.</div>';
+ refreshProcSummary();
 }
+function renderTaskMatChoices(selectedGroups=null){
+ let box=$("taskMatChoices");if(!box)return;let current=editTask?tasks.find(x=>x.id===editTask):null;
+ let picked=selectedGroups||(current?.materials)||{ours:[],customer:[]};
+ let auto=procMats([...document.querySelectorAll(".procChoice:checked")].map(x=>x.value));
+ let autoO=new Set(auto.ours), autoC=new Set(auto.customer);
+ let list=mats.slice().sort((a,b)=>a.name.localeCompare(b.name,"ko"));
+ if(!list.length){box.innerHTML='<div class="meta">등록된 준비물이 없습니다.</div>';return}
+ box.innerHTML=list.map(m=>`<div class="choiceRow" style="justify-content:space-between;align-items:flex-start">
+   <div style="min-width:0"><b>${esc(m.name)}</b>${m.memo?`<br><span class="meta">${esc(m.memo)}</span>`:""}</div>
+   <div class="row" style="gap:6px;flex-shrink:0">
+    <label class="pill ${autoO.has(m.id)?'ok':''}" style="cursor:pointer"><input class="matChoice ours" type="checkbox" value="${m.id}" ${((picked.ours||[]).includes(m.id)||autoO.has(m.id))?"checked":""} ${autoO.has(m.id)?"data-auto='1'":""} onchange="refreshTaskMaterialSummary()" style="width:auto;margin-right:4px">우리</label>
+    <label class="pill ${autoC.has(m.id)?'ok':''}" style="cursor:pointer"><input class="matChoice customer" type="checkbox" value="${m.id}" ${((picked.customer||[]).includes(m.id)||autoC.has(m.id))?"checked":""} ${autoC.has(m.id)?"data-auto='1'":""} onchange="refreshTaskMaterialSummary()" style="width:auto;margin-right:4px">고객</label>
+   </div>
+  </div>`).join("")
+}
+function refreshProcSummary(){let c=[...document.querySelectorAll(".procChoice:checked")].length;let el=$("procSummary");if(el)el.textContent=`수순서 ${c}개 선택됨`}
+function currentTaskMatGroups(){return {ours:[...document.querySelectorAll(".matChoice.ours:checked")].map(x=>x.value),customer:[...document.querySelectorAll(".matChoice.customer:checked")].map(x=>x.value)}}
+function refreshTaskMaterialSummary(){refreshProcSummary();let el=$("matSummary");if(el)el.textContent=materialSummaryFromGroups(currentTaskMatGroups(),directDraft)}
+function addDirectMaterial(){let name=$("directMatName").value.trim();if(!name)return;directDraft.push({id:uid(),name,kind:$("directMatKind").value,memo:"",direct:true});$("directMatName").value="";renderDirectMatList();refreshTaskMaterialSummary()}
+function renderDirectMatList(){let box=$("directMatList");if(!box)return;box.innerHTML=directDraft.length?directDraft.map(m=>`<div class="checkRow"><span><b>${esc(m.name)}</b><br><span class="meta">${matKindName(m.kind)}</span></span><button class="danger mini" onclick="directDraft=directDraft.filter(x=>x.id!=='${m.id}');renderDirectMatList();refreshTaskMaterialSummary()">삭제</button></div>`).join(""):""}
 function saveTask(){
  let date=$("fDate").value||today(),type=$("fType").value,tool=$("fTool").value.trim(),work=$("fWork").value.trim()||"이름 없는 작업";
  let procIds=[...document.querySelectorAll(".procChoice:checked")].map(x=>x.value);
- let payload={date,type,tool,work,title:title(tool,work),memo:$("fMemo").value.trim(),flags:{remain:$("fRemain").checked,soft:$("fSoft").checked,pass:$("fPass").checked},procIds};
- if(editTask){
-   tasks=tasks.map(t=>t.id===editTask?{...t,...payload,checks:{...empty(),...(t.checks||{})}}:t);
- }else{
-   tasks.unshift({id:uid(),...payload,checks:empty(),status:"active",createdAt:new Date().toISOString()});
- }
- selDate=date;dateOn=true;let d=new Date(date+"T00:00:00");calY=d.getFullYear();calM=d.getMonth();
- save();closeTaskModal();render();
-}function openProcModal(id=null){editProc=id;let p=id?procs.find(x=>x.id===id):null;$("procModalTitle").textContent=p?"수순서 수정":"수순서 등록";$("pTitle").value=p?.title||"";$("pContent").value=p?.content||"";$("pTypes").innerHTML=TYPES.map(t=>`<label class="opt"><input class="pType" type="checkbox" value="${t}" ${p?.types.includes(t)?"checked":""}>${t}</label>`).join("");$("procModal").classList.add("show");pushModalState("procModal")}function closeProcModal(){$("procModal").classList.remove("show");editProc=null}function saveProc(){let title=$("pTitle").value.trim()||"이름 없는 수순서",content=$("pContent").value.trim(),types=[...document.querySelectorAll(".pType:checked")].map(x=>x.value);if(editProc)procs=procs.map(p=>p.id===editProc?{...p,title,content,types,updatedAt:new Date().toISOString()}:p);else procs.unshift({id:uid(),title,content,types,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});save();closeProcModal();view="procs";render()}function deleteProc(id){if(!confirm("이 수순서를 삭제할까요?"))return;procs=procs.filter(p=>p.id!==id);tasks=tasks.map(t=>({...t,procIds:t.procIds.filter(x=>x!==id)}));save();render()}function setState(id,state){let t=tasks.find(x=>x.id===selected);if(!t)return;t.checks[id]=t.checks[id]===state?"pending":state;t.status="active";let all=complete(t);save();render();if(all){$("doneModal").classList.add("show");pushModalState("doneModal")}}function closeDoneModal(){$("doneModal").classList.remove("show")}function markDone(){let t=tasks.find(x=>x.id===selected);if(t)t.status="done";save();closeDoneModal();render()}function deleteSelected(){if(!selected)return;tasks=tasks.filter(t=>t.id!==selected);selected=null;save();closeDoneModal();render()}function deleteTask(id){if(!confirm("이 작업을 삭제할까요?"))return;tasks=tasks.filter(t=>t.id!==id);if(selected===id)selected=null;save();render()}function deleteAll(){if(!confirm("저장된 모든 작업을 삭제할까요?"))return;tasks=[];selected=null;save();render()}function pickDate(v){if(dateOn&&selDate===v){dateOn=false;selDate=null}else{selDate=v;dateOn=true;let d=new Date(v+"T00:00:00");calY=d.getFullYear();calM=d.getMonth()}render()}function clearDate(){dateOn=false;selDate=null;render()}function moveM(n){let d=new Date(calY,calM+n,1);calY=d.getFullYear();calM=d.getMonth();render()}function goToday(){selDate=today();dateOn=true;let d=new Date();calY=d.getFullYear();calM=d.getMonth();render()}function toggleCal(){calFold=!calFold;render()}load();history.replaceState({screen:"main"},"","#");render();
-</script></body></html>
+ let auto=procMats(procIds), autoO=new Set(auto.ours), autoC=new Set(auto.customer);
+ let selected=currentTaskMatGroups();
+ let materials={ours:selected.ours.filter(id=>!autoO.has(id)),customer:selected.customer.filter(id=>!autoC.has(id))};
+ let payload={date,type,tool,work,title:title(tool,work),memo:$("fMemo").value.trim(),flags:{remain:$("fRemain").checked,soft:$("fSoft").checked,pass:$("fPass").checked,partsDrop:$("fPartsDrop").checked},procIds,materials,directMaterials:directDraft};
+ if(editTask){tasks=tasks.map(t=>t.id===editTask?{...t,...payload,checks:{...empty(),...(t.checks||{})},materialChecks:t.materialChecks||{}}:t)}
+ else tasks.unshift({id:uid(),...payload,checks:empty(),materialChecks:{},status:"active",createdAt:new Date().toISOString()});
+ selDate=date;dateOn=true;let d=new Date(date+"T00:00:00");calY=d.getFullYear();calM=d.getMonth();save();closeTaskModal();render();
+}
+
+function openProcModal(id=null){
+ editProc=id;let p=id?procs.find(x=>x.id===id):null;
+ $("procModalTitle").textContent=p?"수순서 수정":"수순서 등록";$("pTitle").value=p?.title||"";$("pContent").value=p?.content||"";
+ $("pTypes").innerHTML=TYPES.map(t=>`<label class="optionRow"><input class="pType" type="checkbox" value="${t}" ${p?.types?.includes(t)?"checked":""} onchange="syncAllProcTypes()"> ${t}</label>`).join("");
+ $("pAllTypes").checked=(p?.types||[]).length===TYPES.length;renderProcMatChoices(p?.materials||null);
+ $("procModal").classList.add("show");pushModalState("procModal");
+}
+function closeProcModal(){editProc=null;$("procModal").classList.remove("show")}
+function toggleAllProcTypes(on){document.querySelectorAll(".pType").forEach(x=>x.checked=on)}
+function syncAllProcTypes(){$("pAllTypes").checked=[...document.querySelectorAll(".pType")].every(x=>x.checked)}
+function renderProcMatChoices(selectedGroups=null){
+ let box=$("pMatChoices");if(!box)return;let sel=selectedGroups||{ours:[],customer:[]};
+ let list=mats.slice().sort((a,b)=>a.name.localeCompare(b.name,"ko"));
+ if(!list.length){box.innerHTML='<div class="meta">등록된 준비물이 없습니다.</div>';return}
+ box.innerHTML=list.map(m=>`<div class="choiceRow" style="justify-content:space-between;align-items:flex-start">
+   <div style="min-width:0"><b>${esc(m.name)}</b>${m.memo?`<br><span class="meta">${esc(m.memo)}</span>`:""}</div>
+   <div class="row" style="gap:6px;flex-shrink:0">
+    <label class="pill" style="cursor:pointer"><input class="pMat ours" type="checkbox" value="${m.id}" ${(sel.ours||[]).includes(m.id)?"checked":""} style="width:auto;margin-right:4px">우리</label>
+    <label class="pill" style="cursor:pointer"><input class="pMat customer" type="checkbox" value="${m.id}" ${(sel.customer||[]).includes(m.id)?"checked":""} style="width:auto;margin-right:4px">고객</label>
+   </div>
+  </div>`).join("")
+}
+function saveProc(){let title=$("pTitle").value.trim()||"이름 없는 수순서",types=[...document.querySelectorAll(".pType:checked")].map(x=>x.value),content=$("pContent").value.trim(),materials={ours:[...document.querySelectorAll(".pMat.ours:checked")].map(x=>x.value),customer:[...document.querySelectorAll(".pMat.customer:checked")].map(x=>x.value)};if(!types.length){alert("장비 종류를 하나 이상 선택해주세요.");return}if(editProc){procs=procs.map(p=>p.id===editProc?{...p,title,types,content,materials,updatedAt:new Date().toISOString()}:p)}else procs.unshift({id:uid(),title,types,content,materials,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});save();closeProcModal();render()}
+function openMatModal(id=null){editMat=id;let m=id?mats.find(x=>x.id===id):null;$("matModalTitle").textContent=m?"준비물 수정":"준비물 등록";$("mName").value=m?.name||"";$("mMemo").value=m?.memo||"";$("matDeleteArea").innerHTML=m?`<button class="danger" style="width:100%" onclick="deleteMat('${m.id}')">준비물 삭제</button>`:"";$("matModal").classList.add("show");pushModalState("matModal")}
+function closeMatModal(){editMat=null;$("matModal").classList.remove("show")}
+function saveMat(){let name=$("mName").value.trim();if(!name){alert("준비물 이름을 입력해주세요.");return}let memo=$("mMemo").value.trim();if(editMat)mats=mats.map(m=>m.id===editMat?{...m,name,memo,updatedAt:new Date().toISOString()}:m);else mats.unshift({id:uid(),name,memo,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});save();closeMatModal();render()}
+function deleteMat(id){if(confirm("준비물을 삭제할까요? 수순서와 작업에서 연결된 준비물도 함께 제거됩니다.")){mats=mats.filter(m=>m.id!==id);procs=procs.map(p=>({...p,materials:{ours:(p.materials?.ours||[]).filter(mid=>mid!==id),customer:(p.materials?.customer||[]).filter(mid=>mid!==id)}}));tasks=tasks.map(t=>{let mc={...(t.materialChecks||{})};delete mc[id];return {...t,materials:{ours:(t.materials?.ours||[]).filter(mid=>mid!==id),customer:(t.materials?.customer||[]).filter(mid=>mid!==id)},directMaterials:(t.directMaterials||[]).filter(m=>m.id!==id),materialChecks:mc}});save();closeMatModal();render()}}
+
+function anyModalOpen(){return ["taskModal","procModal","matModal","doneModal"].some(id=>$(id)?.classList.contains("show"))}
+function closeTopModal(){if($("doneModal")?.classList.contains("show")){closeDoneModal();return true}if($("taskModal")?.classList.contains("show")){closeTaskModal();return true}if($("procModal")?.classList.contains("show")){closeProcModal();return true}if($("matModal")?.classList.contains("show")){closeMatModal();return true}return false}
+function pushModalState(id){history.pushState({screen:"modal",id},"","#"+id)}
+window.addEventListener("popstate",()=>{if(closeTopModal())return;if(selected){selected=null;render();return}if(selectedProc){selectedProc=null;render();return}render()});
+
+load();save();render();
+</script>
+</body></html>

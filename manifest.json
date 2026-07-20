@@ -6,7 +6,7 @@
   "display": "standalone",
   "background_color": "#f4f4f5",
   "theme_color": "#18181b",
-  "description": "작업 체크리스트와 수순서를 관리하는 업무노트",
+  "description": "작업 체크리스트, 수순서, 준비물을 관리하는 업무노트",
   "icons": [
     {
       "src": "icon.svg",
